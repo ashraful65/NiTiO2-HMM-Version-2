@@ -1,7 +1,842 @@
+% =============================================================================
 % Chapter 2: Electromagnetic Theory of a Uniaxial Medium
-% Status: STUB -- content to be written
+% =============================================================================
 
 \chapter{Electromagnetic Theory of a Uniaxial Medium}
 \label{ch:em_theory}
 
-\textit{This chapter is under preparation.}
+This chapter builds the electromagnetic foundation that everything else in this
+report rests on. We begin with the simplest possible case, a monochromatic
+plane wave in a homogeneous medium, and work our way step by step toward the
+full dispersion relation of a uniaxial anisotropic material. We then introduce
+material loss and show rigorously, following Jackson et al.\
+(2024)~\cite{jackson2024}, how it transforms the open hyperbolic
+isofrequency contour of an idealised lossless medium into a closed,
+loss-broadened surface.
+
+% -----------------------------------------------------------------------------
+\section{The Plane Wave and the Complex Refractive Index}
+% -----------------------------------------------------------------------------
+
+All the phenomena discussed in this report, reflection, transmission,
+birefringence, and dispersion, are consequences of how electromagnetic waves
+interact with matter. The simplest wave to study is a monochromatic plane wave,
+in which the electric field oscillates everywhere with the same frequency
+$\omega$ and varies spatially only through a complex exponential. We write it as
+\begin{equation}
+  \Evec(\bm{r},t) = \Evec_0 \, \ee^{\ii(\kvec \cdot \bm{r} - \omega t)},
+  \label{eq:ch2_planewave}
+\end{equation}
+where $\Evec_0$ is a constant amplitude vector, $\kvec$ is the wavevector
+pointing in the direction of propagation, and $\bm{r}$ is the position vector.
+
+We use the \textbf{physics convention} $\ee^{-\ii\omega t}$ for the time
+dependence throughout this report. This choice determines the sign of the
+imaginary part of all complex optical quantities. It is worth stating this
+explicitly because the opposite convention $\ee^{+\ii\omega t}$ (common in
+engineering texts and Hecht's \emph{Optics}~\cite{hecht}) leads to conjugate
+signs everywhere. When copying a formula from a source using the opposite
+convention, the imaginary parts must be negated.
+
+\begin{warnbox}
+\textbf{Convention.} This report uses $\ee^{-\ii\omega t}$. The complex
+refractive index is $\nt = n + \ii\kappa$ with $n, \kappa \geq 0$. The complex
+permittivity is $\tilde{\eps} = \nt^2 = (n^2 - \kappa^2) + \ii\,2n\kappa$,
+with a positive imaginary part for a passive absorbing material. Hecht uses
+$e^{+\ii\omega t}$, giving $\nt = n - \ii\kappa$, which is the complex
+conjugate of ours. Flip the sign of all imaginary parts when borrowing from
+Hecht.
+\end{warnbox}
+
+In a real material, part of the electromagnetic energy is converted to heat.
+The imaginary part $\kappa$ of the refractive index quantifies this absorption.
+To see how, substitute $\kvec = (\omega/c)\nt\,\hat{\bm{k}}$ for a wave
+travelling along $+z$ and expand the exponential:
+\begin{equation}
+  E = E_0 \,
+  \underbrace{\ee^{-\frac{\omega\kappa}{c}\,z}}_{\text{amplitude decay}}
+  \underbrace{\ee^{\ii\!\left(\frac{\omega n}{c}\,z - \omega t\right)}}_{\text{oscillation}}.
+  \label{eq:ch2_absorbing_wave}
+\end{equation}
+The phase velocity of the oscillation is $c/n$, so $n$ sets how fast the
+wavefronts advance. The amplitude decays over a characteristic length
+$L_p = c/(\omega\kappa)$, called the propagation length or skin depth. For
+nickel at $700$\,nm wavelength, $\kappa \approx 4.7$~\cite{johnson_christy},
+giving $L_p \approx 12$\,nm. This is why Ni films of only $5$\,nm thickness
+already absorb roughly half the light passing through them.
+
+The relationship between the refractive index and the permittivity in a
+non-magnetic material ($\mu_r = 1$) is simply
+\begin{equation}
+  \tilde{\eps} = \nt^2 = (n^2 - \kappa^2) + \ii\,2n\kappa.
+  \label{eq:ch2_eps_nk}
+\end{equation}
+For a metal at visible wavelengths, $n \sim \kappa$, which means
+$\Re(\tilde{\eps}) = n^2 - \kappa^2$ can be negative while $\Im(\tilde{\eps})
+= 2n\kappa$ is always large and positive. For nickel at $700$\,nm:
+$n = 2.12$, $\kappa = 4.70$~\cite{johnson_christy}, giving
+$\Re(\eps_\text{Ni}) \approx 2.12^2 - 4.70^2 = 4.49 - 22.09 = -17.6$ and
+$\Im(\eps_\text{Ni}) \approx 2 \times 2.12 \times 4.70 = 19.9$.
+The large negative real part and large imaginary part together make Ni a
+strongly metallic, highly lossy material.
+
+% -----------------------------------------------------------------------------
+\section{Geometry of the Problem: Interfaces and Wavevectors}
+% -----------------------------------------------------------------------------
+
+The sample in this report is a planar multilayer stack whose interfaces are
+all perpendicular to the $z$ axis. Figure~\ref{fig:ch2_geometry} shows the
+relevant geometry. A plane wave arrives from above (the air side) at an
+angle $\theta$ measured from the normal to the interfaces. The plane of
+incidence, the plane containing both the incident beam and the normal, is
+the $x$--$z$ plane.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.1,
+  axis/.style={-{Latex[length=2mm]}, thick},
+  wave/.style={-{Latex[length=2.5mm]}, very thick, color=KITblue},
+  comp/.style={-{Latex[length=2mm]}, thick, color=coral},
+  ifc/.style={thick, color=navy}
+]
+
+% Interface
+\fill[gray!10] (-3.5,-2.2) rectangle (3.5,0);
+\draw[ifc, line width=1.2pt] (-3.5,0) -- (3.5,0);
+\node[right, font=\small, color=navy] at (3.5, 0) {interface};
+
+% Medium labels
+\node[font=\small] at (-2.8, 1.0) {Medium 1 (air)};
+\node[font=\small, color=navy!70] at (-2.8,-0.6) {$n_1 = 1$};
+\node[font=\small] at (-2.8,-1.2) {Medium 2 (material)};
+\node[font=\small, color=navy!70] at (-2.8,-1.8) {$\nt = n + \ii\kappa$};
+
+% Normal axis
+\draw[axis, color=navy!50, dashed] (0,-2.2) -- (0,2.2)
+  node[above, font=\small] {normal ($z$)};
+
+% Incident k vector
+\draw[wave] (-1.8, 1.8) -- (0,0)
+  node[midway, above left, font=\small, color=KITblue] {$\kvec$};
+
+% Angle theta
+\draw[color=navy] (0,0.7) arc (90:135:0.7)
+  node[midway, above, font=\small] {$\theta$};
+
+% kx component (horizontal arrow along interface)
+\draw[comp] (0,0) -- (-1.8,0)
+  node[midway, below, font=\small, color=coral] {$k_x = \frac{\omega}{c}\sin\theta$};
+
+% kz component (vertical arrow downward into material)
+\draw[comp] (0,0) -- (0,-1.8)
+  node[midway, right, font=\small, color=coral] {$k_z$};
+
+% Show kx conserved with dotted line
+\draw[dashed, color=coral!60] (-1.8, 0) -- (-1.8, -1.4);
+\draw[comp, color=coral!60] (0,0) -- (-1.8,-1.4);
+\node[below left, font=\scriptsize, color=coral!80] at (-1.8,-1.4)
+  {$k_z'$ (refracted)};
+\node[font=\scriptsize, color=coral] at (-0.9, -1.4)
+  {$k_x$ conserved};
+
+% Coordinate label
+\draw[axis, color=navy!40] (2.5, -2.0) -- (3.2,-2.0)
+  node[right, font=\scriptsize] {$x$};
+\draw[axis, color=navy!40] (2.5, -2.0) -- (2.5,-1.3)
+  node[above, font=\scriptsize] {$z$};
+
+\end{tikzpicture}
+\caption{Geometry of a plane wave incident on a planar interface between
+  air (medium 1, above) and an absorbing material (medium 2, below). The
+  interface is normal to $z$. The wavevector $\kvec$ lies in the $x$--$z$
+  plane at angle $\theta$ from the normal. The boundary condition at the
+  interface forces the tangential (in-plane) component $k_x$ to be the same
+  in both media, while the normal component $k_z$ changes to satisfy the
+  dispersion relation in each medium.}
+\label{fig:ch2_geometry}
+\end{figure}
+
+The wavevector in any medium must satisfy the dispersion relation, which comes
+directly from Maxwell's equations:
+\begin{equation}
+  k_x^2 + k_z^2 = \left(\frac{\omega\,\nt}{c}\right)^2 = \tilde{\eps}\,k_0^2,
+  \qquad k_0 = \frac{\omega}{c} = \frac{2\pi}{\lambda}.
+  \label{eq:ch2_dispersion}
+\end{equation}
+Here $k_0$ is the free-space wavenumber. When the wave crosses an interface,
+the fields must match at every point along the boundary at every instant. This
+matching condition requires the phase of the wave to be the same on both sides
+of the interface at all times. Because the phase is $k_x x - \omega t$ along
+the surface, the only way to satisfy this for all $x$ and $t$ simultaneously is
+if $k_x$ is identical in both media. This is the fundamental reason for
+Snell's law, stated here as a wavevector conservation:
+\begin{equation}
+  \boxed{k_x = \frac{\omega}{c}\,\sin\theta = \text{constant across all interfaces.}}
+  \label{eq:ch2_kx_conserved}
+\end{equation}
+Once $k_x$ is fixed by the angle of incidence, the normal component $k_z$ in
+each medium follows from the dispersion relation:
+\begin{equation}
+  k_z = \sqrt{\tilde{\eps}\,k_0^2 - k_x^2}.
+  \label{eq:ch2_kz}
+\end{equation}
+For an absorbing medium, $\tilde{\eps}$ is complex, so $k_z$ is generally
+complex even when $k_x$ is real. Working with $k_z$ directly avoids the
+awkward complex arcsine that would appear in a refraction-angle formulation.
+
+% -----------------------------------------------------------------------------
+\section{Fresnel Coefficients at a Single Interface}
+% -----------------------------------------------------------------------------
+
+When a plane wave meets a planar interface, it splits into a reflected wave and
+a transmitted wave. The amplitudes of these waves relative to the incident wave
+are given by the Fresnel coefficients, derived by applying the boundary
+conditions to both field components simultaneously~\cite{hecht}.
+
+For the \textbf{TE (s-polarised)} wave, the electric field is perpendicular to
+the plane of incidence ($E$ points along $\hat{y}$). The boundary conditions
+require continuity of $E_y$ and of the tangential magnetic field $H_x$. Using
+$k_z$ rather than angles, the reflection coefficient at an interface from
+medium 1 to medium 2 is
+\begin{equation}
+  r_{12}^{\,s} = \frac{k_{z1} - k_{z2}}{k_{z1} + k_{z2}}.
+  \label{eq:ch2_rs}
+\end{equation}
+
+For the \textbf{TM (p-polarised)} wave, the electric field lies in the plane
+of incidence ($E$ has components along both $\hat{x}$ and $\hat{z}$), while
+the magnetic field is along $\hat{y}$. The boundary conditions require
+continuity of $H_y$ and of the tangential electric field $E_x$. In an
+isotropic medium with permittivity $\tilde{\eps}$, the result is
+\begin{equation}
+  r_{12}^{\,p} = \frac{\tilde{\eps}_2\,k_{z1} - \tilde{\eps}_1\,k_{z2}}
+                      {\tilde{\eps}_2\,k_{z1} + \tilde{\eps}_1\,k_{z2}}.
+  \label{eq:ch2_rp}
+\end{equation}
+By the Stokes relations, the reflection coefficient for the reverse direction
+is $r_{21} = -r_{12}$, and the transmission amplitudes satisfy
+$t_{12}t_{21} = 1 - r_{12}^2$. These relations will be useful in the
+multiple-beam summation below.
+
+The power reflectance is $R = |r|^2$, which is always real and between 0
+and 1. The transmittance involves a ratio of the normal power fluxes and
+takes the form $T = (\Re(k_{z2})/k_{z1})\,|t|^2$ for a non-absorbing
+second medium. For our multilayer problem, we will compute $R$ and $T$
+through the transfer matrix formalism of Chapter~\ref{ch:tmm_derivation},
+which handles all of this automatically.
+
+% -----------------------------------------------------------------------------
+\section{Multiple Reflections in a Slab: the Airy Formulae}
+% -----------------------------------------------------------------------------
+
+A single thin film sitting between two semi-infinite media supports an
+infinite sequence of reflections. Each successive internal reflection
+contributes a partial wave to the total reflected and transmitted fields.
+Summing this infinite geometric series gives the Airy amplitude
+formulae~\cite{hecht}.
+
+Consider a slab of thickness $d$ and complex refractive index $\nt$, with
+air on both sides. Each round trip inside the slab accumulates a phase
+$2\beta$, where the one-way phase is
+\begin{equation}
+  \beta = k_z\,d = k_0\,d\,\sqrt{\tilde{\eps} - \sin^2\theta}.
+  \label{eq:ch2_beta}
+\end{equation}
+The total reflected amplitude is the sum of the directly reflected wave plus
+all waves that escape after one, two, three, ... round trips:
+\begin{equation}
+  r_\text{slab} = r_{12} + t_{12}\,t_{21}\,r_{23}\,\ee^{2\ii\beta}
+    \sum_{m=0}^{\infty}(r_{21}\,r_{23}\,\ee^{2\ii\beta})^m
+  = \frac{r_{12}(1 - \ee^{2\ii\beta})}{1 - r_{12}^2\,\ee^{2\ii\beta}},
+  \label{eq:ch2_rslab}
+\end{equation}
+where the second equality uses the fact that $r_{23} = -r_{21} = r_{12}$
+for a symmetric slab (same medium on both sides) and sums the geometric
+series. The transmitted amplitude is similarly
+\begin{equation}
+  t_\text{slab} = \frac{(1 - r_{12}^2)\,\ee^{\ii\beta}}{1 - r_{12}^2\,\ee^{2\ii\beta}}.
+  \label{eq:ch2_tslab}
+\end{equation}
+The measurable power coefficients are then
+\begin{equation}
+  R = |r_\text{slab}|^2, \qquad T = |t_\text{slab}|^2.
+  \label{eq:ch2_RT}
+\end{equation}
+For an absorbing slab, part of the incident power is converted to heat, so
+$R + T < 1$. The absorbed fraction $A = 1 - R - T$ is the absorptance.
+
+\begin{resultbox}
+\textbf{Why no Fabry-P\'erot fringes are visible in this sample.}
+The Airy formula predicts oscillations in $T(\lambda)$ whenever the round-trip
+phase satisfies $2\,\Re(\beta) = 2m\pi$ for integer $m$. These are the
+Fabry-P\'erot fringes. For the $44$\,nm Ni/TiO$_2$ stack at $700$\,nm, the
+round-trip phase is $2k_0 d\,\Re(\sqrt{\tilde\eps}) \approx 2 \times 0.40 \times
+\Re(\sqrt{\eps_\text{eff}}) \approx 0.8\,\text{rad}$, far less than $2\pi$.
+The first fringe would appear near $200$\,nm wavelength, deep in the ultraviolet.
+The measurement window ($550$ to $1000$\,nm) contains no fringes. This rules
+out the direct Fabry-P\'erot reconstruction of the wavevector and forces us
+onto the model-based inverse approach described in
+Chapters~\ref{ch:why_rt_failed} and~\ref{ch:inverse_methodology}.
+\end{resultbox}
+
+% -----------------------------------------------------------------------------
+\section{The Uniaxial Permittivity Tensor}
+% -----------------------------------------------------------------------------
+
+An isotropic medium responds the same way to an electric field pointing in
+any direction, so a single complex number $\tilde\eps$ is sufficient to
+describe its optical response. An anisotropic medium responds differently
+depending on the direction of the applied field. For a layered metal-dielectric
+stack, this anisotropy arises from the geometry: fields oscillating within
+the layer planes experience a different effective environment from fields
+oriented perpendicular to the layers.
+
+The most general linear relationship between the displacement field
+$\Dvec$ and the electric field $\Evec$ in such a medium is
+$\Dvec = \eps_0\,\bar{\bar\eps}\cdot\Evec$, where $\bar{\bar\eps}$ is the
+permittivity tensor. For a multilayer stack whose layers are perpendicular to
+$z$, the two independent directions are in-plane ($x$ and $y$) and
+out-of-plane ($z$). By the rotational symmetry of the stack in the $xy$ plane,
+the tensor is diagonal with two distinct values:
+\begin{equation}
+  \bar{\bar\eps} = \begin{pmatrix}
+    \epar & 0 & 0 \\ 0 & \epar & 0 \\ 0 & 0 & \eperp
+  \end{pmatrix}.
+  \label{eq:ch2_tensor}
+\end{equation}
+Here $\epar \equiv \eps_x = \eps_y$ is the in-plane permittivity, governing
+the response to electric fields oscillating parallel to the layer planes, and
+$\eperp \equiv \eps_z$ is the out-of-plane permittivity, governing the
+response to fields oriented along the growth direction. Both are complex
+numbers. Their values for the Ni/TiO$_2$ stack are derived from the
+constituent materials in Chapter~\ref{ch:emt} and extracted from ellipsometry
+in Chapter~\ref{ch:inverse_methodology}.
+
+A medium described by this diagonal tensor is called
+\textbf{uniaxial}, because it has a single special axis (the $z$ axis,
+called the optic axis) along which the optical response differs from all
+perpendicular directions. Natural uniaxial crystals such as calcite and
+quartz have $\epar$ and $\eperp$ both real and positive. A
+metal-dielectric multilayer can, under the right conditions, have $\epar$
+and $\eperp$ with opposite signs, as we now show.
+
+% -----------------------------------------------------------------------------
+\section{The Wave Equation in a Uniaxial Medium}
+% -----------------------------------------------------------------------------
+
+With the permittivity tensor in hand, we can now derive the dispersion
+relation for electromagnetic waves propagating in such a medium. The
+derivation starts from Maxwell's curl equations in a source-free,
+non-magnetic medium:
+\begin{align}
+  \nabla \times \Evec &= \ii\omega\mu_0\,\Hvec,
+  \label{eq:ch2_faraday} \\
+  \nabla \times \Hvec &= -\ii\omega\eps_0\,\bar{\bar\eps}\cdot\Evec.
+  \label{eq:ch2_ampere}
+\end{align}
+For a plane wave, all spatial derivatives act as $\nabla \to \ii\kvec$, so
+the curl operations become cross products. Applying $\nabla\times$ to
+equation~\eqref{eq:ch2_faraday} and substituting~\eqref{eq:ch2_ampere}
+yields the vector wave equation:
+\begin{equation}
+  \kvec \times (\kvec \times \Evec) = -k_0^2\,\bar{\bar\eps}\cdot\Evec.
+  \label{eq:ch2_wave_eq_raw}
+\end{equation}
+Using the vector identity $\kvec \times (\kvec \times \Evec) =
+\kvec(\kvec\cdot\Evec) - k^2\Evec$ (where $k^2 = \kvec\cdot\kvec$),
+this becomes
+\begin{equation}
+  \kvec(\kvec\cdot\Evec) - k^2\Evec = -k_0^2\,\bar{\bar\eps}\cdot\Evec.
+  \label{eq:ch2_master}
+\end{equation}
+This is the master equation for electromagnetic wave propagation in an
+anisotropic medium. Everything that follows is the linear algebra of this
+equation.
+
+% -----------------------------------------------------------------------------
+\section{The TM Dispersion Relation}
+% -----------------------------------------------------------------------------
+
+We place $\kvec$ in the $x$--$z$ plane (by rotational symmetry, this
+loses no generality): $\kvec = k_x\,\hat{x} + k_z\,\hat{z}$, where
+$k_x = k_0\sin\theta$ is fixed by the angle of incidence and
+$k_z$ is what we want to find.
+
+For the \textbf{TM (p-polarised)} mode, the electric field lies in the plane
+of incidence: $\Evec = (E_x, 0, E_z)$. The magnetic field is $\Hvec\parallel\hat{y}$.
+Computing the dot product and cross products in~\eqref{eq:ch2_master} and
+reading off the $x$ and $z$ components gives the homogeneous $2\times 2$
+system:
+\begin{equation}
+  \begin{pmatrix}
+    k_0^2\epar - k_z^2 & k_x k_z \\
+    k_x k_z & k_0^2\eperp - k_x^2
+  \end{pmatrix}
+  \begin{pmatrix} E_x \\ E_z \end{pmatrix}
+  = \begin{pmatrix} 0 \\ 0 \end{pmatrix}.
+  \label{eq:ch2_2x2}
+\end{equation}
+A non-trivial electric field $(E_x, E_z) \neq (0,0)$ exists only if the
+determinant of this matrix is zero:
+\begin{equation}
+  (k_0^2\epar - k_z^2)(k_0^2\eperp - k_x^2) - k_x^2 k_z^2 = 0.
+  \label{eq:ch2_det}
+\end{equation}
+Expanding and cancelling the cross term $k_x^2 k_z^2$ gives
+$k_0^4\epar\eperp - k_0^2\epar k_x^2 - k_0^2\eperp k_z^2 = 0$.
+Dividing by $k_0^2\epar\eperp$ yields the \textbf{TM dispersion relation}:
+\begin{equation}
+  \boxed{\frac{k_x^2}{\eperp} + \frac{k_z^2}{\epar} = k_0^2.}
+  \label{eq:ch2_TM_disp}
+\end{equation}
+This is the isofrequency equation: at fixed frequency $\omega$ (and hence
+fixed $k_0$), it defines the curve in $(k_x, k_z)$ space of all allowed
+propagation directions. Its shape depends entirely on the signs of
+$\Re(\epar)$ and $\Re(\eperp)$.
+
+Solving equation~\eqref{eq:ch2_TM_disp} for $k_z$ gives
+\begin{equation}
+  k_z = \sqrt{\epar\!\left(k_0^2 - \frac{k_x^2}{\eperp}\right)}
+      = k_0\sqrt{\epar - \frac{\epar}{\eperp}\sin^2\theta},
+  \label{eq:ch2_kz_aniso}
+\end{equation}
+which is the $k_z$ that appears in the anisotropic transfer matrix
+(Chapter~\ref{ch:tmm_derivation}). When $\epar = \eperp = \tilde\eps$,
+this reduces to $k_z = k_0\sqrt{\tilde\eps - \sin^2\theta}$, recovering
+the isotropic result.
+
+% -----------------------------------------------------------------------------
+\section{Why TE Polarisation Cannot Be Hyperbolic}
+\label{sec:ch2_TE}
+% -----------------------------------------------------------------------------
+
+The TM relation~\eqref{eq:ch2_TM_disp} involves both $\epar$ and $\eperp$
+and can be hyperbolic. The TE polarisation behaves very differently.
+
+For the \textbf{TE (s-polarised)} mode, the electric field is $\Evec = E_y\hat{y}$,
+perpendicular to the plane of incidence. The dot product $\kvec\cdot\Evec$
+vanishes because $\kvec$ has no $y$ component. The master
+equation~\eqref{eq:ch2_master} therefore reduces to
+\begin{equation}
+  -k^2\Evec = -k_0^2\,\bar{\bar\eps}\cdot\Evec.
+  \label{eq:ch2_TE_wave}
+\end{equation}
+The tensor acts on $E_y\hat{y}$ to give $\bar{\bar\eps}\cdot(E_y\hat{y}) =
+\epar E_y\hat{y}$, because the $yy$ component of the tensor is $\epar$.
+The equation becomes
+\begin{equation}
+  k_x^2 + k_z^2 = \epar\,k_0^2.
+  \label{eq:ch2_TE_disp}
+\end{equation}
+Only $\epar$ appears. The out-of-plane permittivity $\eperp$ has completely
+dropped out. This happens because the TE electric field is tangential to the
+layer planes, so it never probes the out-of-plane response.
+Equation~\eqref{eq:ch2_TE_disp} is always the equation of a circle (in 2D)
+or sphere (in 3D) of radius $\sqrt{\epar}\,k_0$. It can never be a hyperbola.
+
+There are three progressively deeper reasons why TE hyperbolicity is
+impossible, and it is worth stating all three because they illuminate the
+physics at different levels.
+
+\paragraph{Reason 1: Algebraic.} The two wavevector components $k_x$ and
+$k_z$ enter equation~\eqref{eq:ch2_TE_disp} with the same coefficient. They
+can never have opposite signs in the dispersion equation, which is the
+algebraic condition for a hyperbola.
+
+\paragraph{Reason 2: Duality.} Restoring the magnetic permeability, the TE
+and TM dispersion relations are exact electromagnetic duals of each other.
+The TM relation requires $\epar\eperp < 0$ for hyperbolicity. The TE relation
+is obtained by the substitution $\eps \leftrightarrow \mu$, so TE
+hyperbolicity would require $\mu_\parallel\mu_\perp < 0$: a magnetically
+hyperbolic medium. Ni and TiO$_2$ are both non-magnetic at optical frequencies
+($\mu_r = 1$), so the TE surface remains a circle.
+
+\paragraph{Reason 3: Physical.} A hyperbolic medium supports propagating
+waves with arbitrarily large real wavevectors. For TM, the normal component
+$k_z$ remains real even as $k_x \to \infty$ (see equation~\eqref{eq:ch2_kz_aniso}).
+For TE, equation~\eqref{eq:ch2_TE_disp} gives $k_z^2 = \epar k_0^2 - k_x^2$,
+which becomes large and negative as $k_x$ grows. A negative $k_z^2$ means
+$k_z = \pm\ii\kappa_z$ is imaginary, so the field varies as $\ee^{\pm\kappa_z z}$.
+In a passive medium, the field must decay away from its source, selecting the
+decaying root $\ee^{-\kappa_z z}$. The TE high-$k_x$ mode is therefore
+evanescent: it decays exponentially and cannot propagate into the bulk.
+Only the TM polarisation supports propagating high-$k$ modes.
+
+\begin{resultbox}
+\textbf{Summary: hyperbolicity is a TM-only phenomenon.} In a non-magnetic
+uniaxial medium, the TE dispersion is always $k_x^2 + k_z^2 = \epar k_0^2$,
+an isotropic circle. Only the TM dispersion
+$k_x^2/\eperp + k_z^2/\epar = k_0^2$ involves both permittivity components
+and can produce a hyperbolic isofrequency contour. All the interesting physics
+of hyperbolic metamaterials is therefore TM physics. The ellipsometric
+measurements in this report, which separate the $p$- and $s$-polarised
+responses, exploit exactly this distinction.
+\end{resultbox}
+
+% -----------------------------------------------------------------------------
+\section{The Lossless Isofrequency Contour and its Four Regimes}
+% -----------------------------------------------------------------------------
+
+In the idealised limit of a lossless material, both $\epar$ and $\eperp$ are
+real. The TM dispersion relation~\eqref{eq:ch2_TM_disp} then defines a conic
+section in the $(k_x, k_z)$ plane whose shape depends on the signs of the
+two permittivities. There are four cases, summarised in
+Table~\ref{tab:ch2_ifc_regimes} and illustrated in
+Figure~\ref{fig:ch1_ifc_regimes} in Chapter~\ref{ch:introduction}.
+
+\begin{table}[h]
+\centering
+\caption{The four lossless TM isofrequency contour topologies, classified
+  by the signs of $\Re(\epar)$ and $\Re(\eperp)$. The Ni/TiO$_2$ stack sits
+  nominally in the Type-II column, but material losses close the open contour.}
+\label{tab:ch2_ifc_regimes}
+\begin{tabular}{cclp{5cm}}
+\toprule
+$\Re(\epar)$ & $\Re(\eperp)$ & IFC shape & Physical character \\
+\midrule
+$+$ & $+$ & Closed ellipse   & Dielectric in both directions; bounded
+                                wavevectors \\
+$+$ & $-$ & Type-I hyperbola & Arms along $k_x$; metallic out-of-plane \\
+$-$ & $+$ & Type-II hyperbola & Arms along $k_z$; metallic in-plane \\
+$-$ & $-$ & No propagating TM modes & Both components metallic \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For the Ni/TiO$_2$ multilayer, the effective medium theory (Chapter~\ref{ch:emt})
+predicts $\Re(\epar) < 0$ at wavelengths above approximately $607$\,nm and
+$\Re(\eperp) > 0$ throughout, placing the stack nominally in the Type-II
+hyperbolic column. An ideal Type-II hyperboloid opens along the $k_z$ axis with
+asymptotes satisfying $k_z/k_x = \pm\sqrt{\eperp/|\epar|}$. The wavevector
+magnitude grows without bound as the propagation direction approaches the
+asymptote.
+
+In an ideal lossless hyperbolic medium, this unbounded wavevector is a genuine
+physical property. It implies that the medium can channel electromagnetic energy
+at spatial scales far below one wavelength and that the density of photon states
+diverges. These properties have been exploited for near-field heat transfer,
+subdiffraction imaging, and enhanced spontaneous emission in low-loss hyperbolic
+materials such as hexagonal boron nitride. The question for Ni/TiO$_2$ is
+whether the heavy absorption of the Ni layers allows any of these properties
+to survive.
+
+% -----------------------------------------------------------------------------
+\section{Introducing Loss: Complex Wavevectors and the Collinearity Condition}
+% -----------------------------------------------------------------------------
+
+In a real material, the permittivities are complex. We write
+\begin{equation}
+  \epar = |\epar|\,\ee^{\ii\gamma_\parallel}, \qquad
+  \eperp = |\eperp|\,\ee^{\ii\gamma_\perp},
+  \label{eq:ch2_polar_eps}
+\end{equation}
+where $\gamma_\parallel = \arctan(\Im\epar/\Re\epar) \in [0,\pi]$ is the
+phase angle of the in-plane permittivity, and similarly for $\gamma_\perp$.
+For a dielectric with $\Re\eps > 0$, the phase angle is close to zero.
+For a metal with $\Re\eps < 0$ and small loss, the phase angle is close to $\pi$.
+For nickel, where $\Im\eps \approx |\Re\eps|$, the phase angle is near $\pi/2$.
+
+With complex permittivities, equation~\eqref{eq:ch2_TM_disp} cannot be
+satisfied by a real wavevector. The wavevector must itself become complex:
+\begin{equation}
+  \kvec = \kvec' + \ii\kvec'',
+  \label{eq:ch2_complex_k}
+\end{equation}
+where $\kvec' = \Re(\kvec)$ is the phase (or propagation) vector and
+$\kvec'' = \Im(\kvec)$ is the attenuation vector. The wave amplitude varies as
+$\ee^{-\kvec''\cdot\bm{r}}$, which decays along the direction of $\kvec''$.
+
+For a well-behaved plane wave that does not grow transversely (which would
+violate energy conservation in a passive medium), the planes of constant phase
+must be parallel to the planes of constant amplitude. This means $\kvec'$
+and $\kvec''$ must point in the same direction. Writing each complex component
+as $k_j = |k_j|\ee^{\ii\phi_j}$ for $j = x, z$, the condition
+$\kvec'\parallel\kvec''$ requires the phases to be equal:
+\begin{equation}
+  \phi_z = \phi_x \equiv \phi \quad \text{(collinearity condition).}
+  \label{eq:ch2_collinearity}
+\end{equation}
+This single constraint, imposed by the requirement of a physical plane wave,
+is the key that unlocks the analytical solution. It allows us to write the
+entire complex wavevector as a single complex prefactor times a real direction:
+\begin{equation}
+  \frac{\kvec}{k_0} = \ee^{\ii\phi}\,f(\theta)
+  \begin{pmatrix}\sin\theta \\ \cos\theta\end{pmatrix},
+  \label{eq:ch2_k_parametric}
+\end{equation}
+where $\theta$ is a real propagation angle (the direction of energy flow),
+$f(\theta) > 0$ is a real magnitude, and $\phi$ is the shared phase. The
+complexity of $\kvec$ resides entirely in the prefactor $\ee^{\ii\phi}$.
+Both $\theta$ and $\phi$ are real; sweeping $\theta$ from $0$ to $90^\circ$
+traces out the full isofrequency surface.
+
+% -----------------------------------------------------------------------------
+\section{Solving the Complex Dispersion: Phase and Magnitude Conditions}
+% -----------------------------------------------------------------------------
+
+Substituting~\eqref{eq:ch2_k_parametric} into the TM dispersion
+relation~\eqref{eq:ch2_TM_disp} gives
+\begin{equation}
+  1 = \ee^{2\ii\phi}\,f^2\,S(\theta), \qquad
+  S(\theta) \equiv \frac{\sin^2\theta}{\eperp} + \frac{\cos^2\theta}{\epar}.
+  \label{eq:ch2_S_def}
+\end{equation}
+Writing $1/\eperp = |\eperp|^{-1}\ee^{-\ii\gamma_\perp}$ and
+$1/\epar = |\epar|^{-1}\ee^{-\ii\gamma_\parallel}$, the quantity $S$ is
+a complex number: $S = |S|\,\ee^{\ii\beta}$. The left-hand side is the real
+number 1, so equating magnitudes and phases of both sides
+splits~\eqref{eq:ch2_S_def} into two separate conditions.
+
+\paragraph{Phase condition (determines $\phi$).}
+Setting the total phase to zero ($2\phi + \beta = 0$) and expanding
+$\beta = \arctan(\Im S / \Re S)$, where
+\begin{align}
+  \Re S &= \frac{\sin^2\theta}{|\eperp|}\cos\gamma_\perp
+         + \frac{\cos^2\theta}{|\epar|}\cos\gamma_\parallel, \\
+  \Im S &= -\left(\frac{\sin^2\theta}{|\eperp|}\sin\gamma_\perp
+         + \frac{\cos^2\theta}{|\epar|}\sin\gamma_\parallel\right),
+\end{align}
+gives the shared phase:
+\begin{equation}
+  \tan(2\phi) = \frac{|\epar|\sin\gamma_\perp\sin^2\theta
+                    + |\eperp|\sin\gamma_\parallel\cos^2\theta}
+                     {|\epar|\cos\gamma_\perp\sin^2\theta
+                    + |\eperp|\cos\gamma_\parallel\cos^2\theta}.
+  \label{eq:ch2_phase_condition}
+\end{equation}
+This is equation (2b) of Jackson et al.~\cite{jackson2024} (with $\mu_r = 1$).
+Note that $\phi$ depends on $\theta$: as the propagation direction rotates
+from $0^\circ$ (along the optic axis) to $90^\circ$ (perpendicular to it),
+$\phi$ changes continuously from $\gamma_\parallel/2$ to $\gamma_\perp/2$.
+
+\paragraph{Magnitude condition (determines $f$).}
+From $f^2|S| = 1$ we get $f = |S|^{-1/2}$. Writing $a = \sin^2\theta/|\eperp|$
+and $b = \cos^2\theta/|\epar|$:
+\begin{equation}
+  f(\theta) = \left(\frac{\sin^4\theta}{|\eperp|^2}
+            + \frac{\cos^4\theta}{|\epar|^2}
+            + \frac{2\cos(\gamma_\perp - \gamma_\parallel)\sin^2\theta\cos^2\theta}
+                   {|\eperp||\epar|}\right)^{-1/4}.
+  \label{eq:ch2_magnitude_condition}
+\end{equation}
+This is equation (2c) of Jackson et al.~\cite{jackson2024}.
+
+Equations~\eqref{eq:ch2_phase_condition} and~\eqref{eq:ch2_magnitude_condition}
+together with~\eqref{eq:ch2_k_parametric} constitute the complete analytical
+solution to the lossy dispersion problem. Separating
+$\kvec/k_0 = f\ee^{\ii\phi}(\sin\theta, \cos\theta)$ into real and imaginary
+parts:
+\begin{align}
+  \frac{\Re(\kvec)}{k_0} &= f(\theta)\cos\phi(\theta)
+    \begin{pmatrix}\sin\theta\\\cos\theta\end{pmatrix},
+  \label{eq:ch2_Rek} \\
+  \frac{\Im(\kvec)}{k_0} &= f(\theta)\sin\phi(\theta)
+    \begin{pmatrix}\sin\theta\\\cos\theta\end{pmatrix}.
+  \label{eq:ch2_Imk}
+\end{align}
+Sweeping $\theta$ from $0^\circ$ to $90^\circ$ traces the phase surface
+(IFC) from~\eqref{eq:ch2_Rek} and the attenuation surface
+from~\eqref{eq:ch2_Imk}. The ratio $\Re(k)/\Im(k) = \cot\phi$ tells us
+directly how many wavelengths a mode travels before its amplitude decays
+by a factor of $1/\ee$.
+
+% -----------------------------------------------------------------------------
+\section{Why Loss Closes the Hyperboloid: the Maximum Wavevector}
+% -----------------------------------------------------------------------------
+
+We can now understand analytically why material loss closes the open
+hyperbola into a finite contour. This is the central physical insight of
+the Jackson et al.\ (2024) paper~\cite{jackson2024}.
+
+In the lossless limit, $\gamma_\parallel \to \pi$ (metallic, exactly) and
+$\gamma_\perp \to 0$ (dielectric, exactly). The phase condition gives
+$\phi \to 0$, so $\ee^{\ii\phi} \to 1$ and $\Re(\kvec) = k_0 f(\theta)(\sin\theta,
+\cos\theta)$. As $\theta$ approaches the asymptotic angle of the hyperbola,
+the denominator in equation~\eqref{eq:ch2_magnitude_condition} approaches
+zero and $f(\theta) \to \infty$. The lossless real wavevector grows without
+bound, and the IFC is open.
+
+In the lossy case, $\phi$ is not zero. As $\theta$ increases from $0$ toward
+$90^\circ$, the phase $\phi$ varies continuously from $\gamma_\parallel/2$
+to $\gamma_\perp/2$. For Ni, $\gamma_\parallel \approx \pi - \arctan(20/18)
+\approx 0.83\pi$ (large loss), so $\phi$ starts near $0.42\pi$, which means
+$\cos\phi \approx \cos(0.42\pi) \approx 0.25$. The magnitude of the
+\emph{real} part of $\kvec$ is
+\begin{equation}
+  |\Re(\kvec)| = k_0\,f(\theta)\cos\phi(\theta).
+  \label{eq:ch2_Rk_product}
+\end{equation}
+As $\theta$ sweeps toward the old asymptotic direction, $f(\theta)$ grows
+but $\cos\phi(\theta)$ falls simultaneously. Their product reaches a finite
+maximum and then turns back. The formerly infinite arms of the hyperbola
+become closed, and the IFC is a bounded curve.
+
+The maximum wavevector $k_m$ occurs at the propagation angle $\theta_{k_m}$
+where $\partial|\Re(\kvec)|/\partial\theta = 0$, which corresponds to a
+shared phase
+\begin{equation}
+  \phi_{k_m} = \frac{\pi}{6} + \frac{1}{3}\arctan\!\left(
+    \frac{|\epar|\sin\gamma_\perp - |\eperp|\sin\gamma_\parallel}
+         {|\epar|\cos\gamma_\perp - |\eperp|\cos\gamma_\parallel}\right).
+  \label{eq:ch2_phikm}
+\end{equation}
+For small loss, $\phi_{k_m} \approx \pi/6$, giving $k_m \approx
+(\sqrt{3}/2)\,k_0 f(\theta_{k_m})$.
+
+Figure~\ref{fig:ch2_lossy_ifc} illustrates this transformation schematically.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0,
+  axis/.style={-{Latex[length=2mm]}, thick, color=navy},
+  lossy/.style={very thick, color=KITgreen},
+  lossless/.style={very thick, dashed, color=coral},
+  attn/.style={thick, color=KITblue, densely dotted},
+  lbl/.style={font=\small}
+]
+
+%% --- Left panel: lossless ---
+\begin{scope}[shift={(-3.8,0)}]
+  \draw[axis] (-0.5,0) -- (2.2,0) node[right, lbl] {$k_x/k_0$};
+  \draw[axis] (0,-2.0) -- (0,2.0) node[above, lbl] {$k_z/k_0$};
+
+  % Type-II hyperbola (arms along kz); domain >= sqrt(0.18) ~ 0.424, use 0.44
+  \foreach \sgn in {1,-1}{
+    \draw[lossless, domain=0.44:1.9, samples=80]
+      plot ({0.55*sqrt(\x*\x - 0.18)}, {\sgn*\x});
+  }
+
+  % Asymptote
+  \draw[gray!50, dashed] (0,-1.9) -- (1.05, 1.9);
+  \draw[gray!50, dashed] (0, 1.9) -- (1.05,-1.9);
+  \node[below, font=\footnotesize, color=coral] at (1.1,-2.1)
+    {Lossless (Type-II)};
+  \node[font=\scriptsize, color=gray] at (1.6,1.5) {asymptote};
+
+  \draw[-{Latex[length=2mm]}, gray, thick] (0.5, 1.5) -- (0.7, 1.85);
+  \node[right, font=\scriptsize, color=gray] at (0.7, 1.7) {$k\to\infty$};
+\end{scope}
+
+%% --- Right panel: lossy ---
+\begin{scope}[shift={(2.5,0)}]
+  \draw[axis] (-0.5,0) -- (2.2,0) node[right, lbl] {$k_x/k_0$};
+  \draw[axis] (0,-2.0) -- (0,2.0) node[above, lbl] {$k_z/k_0$};
+
+  % Re(k): closed lossy IFC
+  \draw[lossy] (0,0)
+    .. controls (0.25, 1.1) and (0.8, 1.4) .. (1.35, 0.65)
+    .. controls (1.65, 0.15) and (1.65,-0.15) .. (1.35,-0.65)
+    .. controls (0.8,-1.4) and (0.25,-1.1) .. (0,0);
+
+  % km marker
+  \fill[KITgreen] (1.65, 0) circle (2pt);
+  \draw[dashed, KITgreen!60] (1.65,0) -- (1.65,-0.35);
+  \node[right, font=\scriptsize, color=KITgreen] at (1.65,-0.35)
+    {$k_m$};
+
+  % Im(k): attenuation surface
+  \draw[attn] (0,0)
+    .. controls (0.15, 0.7) and (0.55, 1.1) .. (1.0, 1.2)
+    .. controls (1.35, 1.3) and (1.7, 1.1) .. (1.9, 0.65)
+    .. controls (2.0, 0.3) and (2.0,-0.3) .. (1.9,-0.65)
+    .. controls (1.7,-1.1) and (1.35,-1.3) .. (1.0,-1.2)
+    .. controls (0.55,-1.1) and (0.15,-0.7) .. (0,0);
+
+  \node[below, font=\footnotesize, color=KITgreen] at (1.1,-2.1)
+    {Lossy (closed)};
+  \node[right, font=\scriptsize, color=KITgreen] at (0.5, 1.3)
+    {$\Re(\kvec)/k_0$};
+  \node[right, font=\scriptsize, color=KITblue] at (1.7, 1.1)
+    {$\Im(\kvec)/k_0$};
+\end{scope}
+
+\draw[-{Latex[length=3mm]}, very thick, color=navy!60]
+  (-1.4, 0) -- (-0.2, 0)
+  node[midway, above, font=\footnotesize, color=navy] {add loss};
+
+\end{tikzpicture}
+\caption{Schematic of how material loss transforms the isofrequency contour
+  (IFC) of a Type-II hyperbolic medium.
+  \textbf{Left:} the lossless case. The IFC is an open hyperbola whose arms
+  extend to arbitrarily large wavevectors along the $k_z$ axis. Grey dashed
+  lines show the asymptotes.
+  \textbf{Right:} with complex permittivities. The phase $\phi(\theta)$
+  introduced by loss causes $\cos\phi$ to suppress $|\Re(\kvec)|$ as the
+  wavenumber grows, closing the arms at a finite maximum wavevector $k_m$
+  (filled circle). The attenuation surface $\Im(\kvec)/k_0$ (dotted blue)
+  continues to grow beyond $k_m$: the largest-wavevector modes are also
+  the most strongly damped.}
+\label{fig:ch2_lossy_ifc}
+\end{figure}
+
+The key physical implication is that $k_m$ sets an upper limit on the
+spatial resolution that a hyperbolic metamaterial can provide. Modes with
+$k > k_m$ do not exist as propagating waves; they are purely evanescent.
+The figure of merit of a lossy hyperbolic medium is therefore $k_m/k_0$.
+
+% -----------------------------------------------------------------------------
+\section{Application to the Ni/TiO\texorpdfstring{$_2$}{2} System}
+% -----------------------------------------------------------------------------
+
+We can now evaluate the Ni/TiO$_2$ stack using the framework developed above.
+The key dimensionless quantity is the \textbf{in-plane loss tangent}
+$\Im(\epar)/|\Re(\epar)|$. A hyperbolic medium with open propagating branches
+requires this ratio to be much less than 1. When the loss tangent is of order
+1 or larger, the IFC is closed and the hyperbolic character is lost.
+
+For Ni/TiO$_2$ with fill fraction $\rho \approx 0.379$, using the Johnson
+and Christy Ni data~\cite{johnson_christy} and Jolivet TiO$_2$
+data~\cite{jolivet}:
+
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$\lambda$ (nm) & $\Re(\epar)$ & $\Im(\epar)$ &
+  $\Im(\epar)/|\Re(\epar)|$ \\
+\midrule
+600  & $+0.11$ & $5.15$ & $\gg 1$ (near ENZ) \\
+650  & $-0.73$ & $5.58$ & $7.6$  \\
+700  & $-1.47$ & $6.13$ & $4.2$  \\
+750  & $-2.10$ & $6.65$ & $3.2$  \\
+850  & $-3.00$ & $7.40$ & $2.5$  \\
+1000 & $-4.00$ & $8.00$ & $2.0$  \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The loss tangent ranges from 2 to above 7 across the measurement window.
+It is far above 1 throughout. In a hyperbolic material like hexagonal boron
+nitride (hBN), by contrast, the analogous loss tangent is of order $10^{-2}$.
+Ni/TiO$_2$ is a \textbf{heavily lossy} system in which the imaginary part of
+$\epar$ dominates the real part at every wavelength studied.
+
+Using the Jackson et al.\ (2024) framework, the maximum wavevector for this
+system is approximately $k_m/k_0 \approx 3.1$--$3.2$ across $550$--$1000$\,nm.
+For comparison, hBN reaches $k_m/k_0 \approx 7$--$12$ in its hyperbolic bands.
+The Ni/TiO$_2$ contour is nominally Type-II by the lossless classification,
+but the dominant imaginary part forces it into a closed shape rather than an
+open hyperbola.
+
+The extraction results in Chapter~\ref{ch:results} will further show that
+both $\Re(\epar)$ and $\Re(\eperp)$ are positive throughout $550$--$1000$\,nm
+once the actual fabricated sample is characterised by ellipsometry. The
+effective medium prediction of a sign change in $\Re(\epar)$ near $607$\,nm
+is not borne out by the measurement, because the fabricated Ni is sub-metallic
+relative to the bulk Johnson and Christy values. The IFC is therefore a closed
+ellipse in both the lossless and lossy sense, as quantified in
+Chapter~\ref{ch:results}.
+
+\begin{resultbox}
+\textbf{Summary of Chapter~\ref{ch:em_theory}.} Starting from Maxwell's
+equations, we derived the TM dispersion relation
+$k_x^2/\eperp + k_z^2/\epar = k_0^2$, which governs wave propagation in a
+uniaxial medium. We showed that the TE polarisation is always isotropic and
+can never be hyperbolic in a non-magnetic material. We derived the full
+analytical solution for the lossy case following Jackson et al.\
+(2024)~\cite{jackson2024}, showing that material loss forces the wavevector
+to be complex, requires a collinearity condition, and produces a phase factor
+$\ee^{\ii\phi}$ that suppresses $|\Re(\kvec)|$ at large $\theta$, closing
+the formerly open hyperboloid at a finite maximum wavevector $k_m$. For
+Ni/TiO$_2$ with in-plane loss tangent $\sim 2$--$8$, the IFC is a closed
+loss-broadened contour throughout the measurement window.
+\end{resultbox}
