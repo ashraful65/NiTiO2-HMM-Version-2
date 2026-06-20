@@ -1,6 +1,467 @@
+% =============================================================================
 % Chapter 1: Introduction and Motivation
-% Status: STUB -- content to be written
+% =============================================================================
 
 \chapter{Introduction and Motivation}
+\label{ch:introduction}
 
-\textit{This chapter is under preparation.}
+\section{Light and the Materials That Shape It}
+
+Light is one of the most carefully studied phenomena in all of science, yet
+its interaction with matter continues to produce surprises. When a beam of
+light enters a material, the electrons in that material respond to the
+oscillating electric field of the light wave. This response determines
+everything we observe: how much light is reflected, how much passes through,
+how the direction of propagation changes, and how quickly the energy is
+absorbed. For centuries, the materials available to scientists were the ones
+found in nature, and their optical properties were fixed by chemistry and
+crystal structure.
+
+Over the past three decades, a different idea has emerged. Instead of
+accepting the materials that nature provides, researchers began asking whether
+it is possible to \emph{engineer} optical properties by structuring matter at
+scales smaller than the wavelength of light. If a composite structure is built
+from two different materials arranged in layers or patterns whose feature size
+is far below one wavelength, then the light cannot resolve the individual
+components. The wave sees only the average response of the composite. By
+choosing the right materials and the right geometry, one can in principle
+design a response that no naturally occurring material possesses. Such
+engineered composites are called \textbf{metamaterials}, from the Greek prefix
+\emph{meta}, meaning beyond.
+
+Metamaterials have produced several striking results. Materials with a
+negative refractive index were demonstrated experimentally in the microwave
+regime in 2001, confirming a theoretical prediction from the 1960s that had
+long been considered a mathematical curiosity. Perfect lensing, invisibility
+cloaking at specific frequencies, and extreme light confinement have all been
+demonstrated in various forms. The field has matured from a proof of concept
+into a rich area of practical photonics engineering.
+
+This report concerns a particular class of metamaterial known as a
+\textbf{hyperbolic metamaterial}, and specifically a thin multilayer stack
+composed of nickel (Ni) and titanium dioxide (TiO$_2$). The central goal is to
+determine, from optical measurements, how light actually propagates inside
+this structure at visible and near-infrared wavelengths.
+
+% -----------------------------------------------------------------------------
+\section{Hyperbolic Metamaterials: A New Kind of Optical Anisotropy}
+% -----------------------------------------------------------------------------
+
+To understand what makes a hyperbolic metamaterial special, it helps to first
+recall how light propagates in an ordinary anisotropic crystal such as calcite
+or quartz. In such a crystal, the speed of light depends on the direction of
+propagation and on the polarisation of the wave. This property, called
+birefringence, arises because the electronic structure of the crystal is not
+the same in every direction. The crystal has a preferred axis called the optic
+axis, and the response of the electrons to light is different along this axis
+compared to the directions perpendicular to it.
+
+A compact way to describe this directional response is through the
+\textbf{permittivity tensor} $\bar{\bar{\varepsilon}}$. The permittivity is
+the quantity that tells us how strongly the electrons in a material respond to
+an applied electric field. In an isotropic material, this response is the same
+in every direction, and the permittivity is a single number. In a uniaxial
+anisotropic material, the permittivity along the optic axis, which we call
+$\eperp$, differs from the permittivity in the plane perpendicular to that
+axis, which we call $\epar$. The tensor is diagonal,
+\begin{equation}
+  \bar{\bar{\varepsilon}} = \begin{pmatrix}
+    \epar & 0 & 0 \\ 0 & \epar & 0 \\ 0 & 0 & \eperp
+  \end{pmatrix},
+  \label{eq:ch1_tensor}
+\end{equation}
+where we have placed the optic axis along the $z$ direction. For a layered
+stack, $z$ is the direction normal to the layers, so $\eperp$ describes the
+response to fields oriented perpendicular to the layer planes, and $\epar$
+describes the response to fields oscillating within the layer planes.
+
+In a natural crystal, both $\epar$ and $\eperp$ are positive real numbers.
+The crystal is a dielectric in both directions, meaning that light propagating
+in any direction encounters a material that supports oscillating waves without
+rapidly absorbing them. The surface in wavevector space that describes all the
+directions a wave can travel at a fixed frequency is a closed surface: an
+ellipsoid. An ellipsoid is a stretched sphere, and it curves back on itself
+in every direction. No matter how the wave is oriented, it always remains
+within the same bounded region of wavevector space.
+
+A hyperbolic metamaterial does something fundamentally different. By mixing a
+metal and a dielectric in the right proportion and geometry, it becomes
+possible to make $\epar$ and $\eperp$ have \emph{opposite signs}. One
+component of the permittivity tensor is negative, like a metal, while the
+other is positive, like a dielectric. This sign difference has a dramatic
+consequence for wave propagation.
+
+The surface in wavevector space that describes the allowed propagation
+directions is no longer a closed ellipsoid. It opens up into a hyperboloid: a
+surface that extends outward to arbitrarily large wavevectors. This is the
+defining property of a hyperbolic medium, and it is the origin of the name.
+Depending on which permittivity component is negative, the two qualitatively
+different open topologies are called Type-I and Type-II, as illustrated in
+Figure~\ref{fig:ch1_ifc_regimes}.
+
+The practical importance of this open topology is substantial. Modes with very
+large wavevectors carry spatial information at very fine scales. In a normal
+dielectric or even in a conventional high-index material, these short-wavelength
+modes are evanescent: they decay exponentially away from any source that
+excites them and cannot propagate. In a hyperbolic medium, they can propagate
+freely into the bulk. This means that a hyperbolic medium can carry information
+at spatial scales far below what conventional optics allows, which has direct
+applications in subdiffraction imaging, enhanced spontaneous emission, and
+nanoscale heat transfer between objects.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.05,
+  axis/.style={-{Latex[length=2mm]}, thick, color=navy},
+  ellcurve/.style={thick, color=KITgreen},
+  hypcurve/.style={thick, color=coral},
+  lbl/.style={font=\small},
+  sublbl/.style={font=\scriptsize, color=navy}
+]
+
+%% ---- Panel A: Elliptic ----
+\begin{scope}[shift={(-4.8, 2.3)}]
+  \draw[axis] (-1.4,0) -- (1.5,0) node[right, lbl] {$k_\parallel/k_0$};
+  \draw[axis] (0,-1.4) -- (0,1.5) node[above, lbl] {$k_z/k_0$};
+  \draw[ellcurve] (0,0) ellipse (1.05 and 0.78);
+  \node[sublbl] at (0, 0.38) {$\Re\epar>0$};
+  \node[sublbl] at (0,-0.38) {$\Re\eperp>0$};
+  \node[below, font=\footnotesize\bfseries, color=KITgreen] at (0,-1.6)
+    {(a) Elliptic / dielectric};
+\end{scope}
+
+%% ---- Panel B: Type-I Hyperbolic ----
+\begin{scope}[shift={(0.8, 2.3)}]
+  \draw[axis] (-1.4,0) -- (1.5,0) node[right, lbl] {$k_\parallel/k_0$};
+  \draw[axis] (0,-1.4) -- (0,1.5) node[above, lbl] {$k_z/k_0$};
+  \foreach \sgny in {1,-1} {
+    \foreach \sgnx in {1,-1} {
+      \draw[hypcurve, domain=0.42:1.35, samples=60]
+        plot ({\sgnx*\x}, {\sgny*0.58*sqrt(\x*\x - 0.18)});
+    }
+  }
+  \node[sublbl] at (0, 0.38) {$\Re\epar>0$};
+  \node[sublbl] at (0,-0.38) {$\Re\eperp<0$};
+  \node[below, font=\footnotesize\bfseries, color=coral] at (0,-1.6)
+    {(b) Type-I Hyperbolic};
+\end{scope}
+
+%% ---- Panel C: Type-II Hyperbolic ----
+\begin{scope}[shift={(-4.8, -1.9)}]
+  \draw[axis] (-1.4,0) -- (1.5,0) node[right, lbl] {$k_\parallel/k_0$};
+  \draw[axis] (0,-1.4) -- (0,1.5) node[above, lbl] {$k_z/k_0$};
+  \foreach \sgny in {1,-1} {
+    \foreach \sgnx in {1,-1} {
+      \draw[hypcurve, domain=0.38:1.35, samples=60]
+        plot ({\sgnx*0.62*sqrt(\x*\x - 0.14)}, {\sgny*\x});
+    }
+  }
+  \node[sublbl] at (0, 0.38) {$\Re\epar<0$};
+  \node[sublbl] at (0,-0.38) {$\Re\eperp>0$};
+  \node[below, font=\footnotesize\bfseries, color=coral] at (0,-1.6)
+    {(c) Type-II Hyperbolic};
+\end{scope}
+
+%% ---- Panel D: Metal-like ----
+\begin{scope}[shift={(0.8, -1.9)}]
+  \draw[axis] (-1.4,0) -- (1.5,0) node[right, lbl] {$k_\parallel/k_0$};
+  \draw[axis] (0,-1.4) -- (0,1.5) node[above, lbl] {$k_z/k_0$};
+  \node[sublbl] at (0, 0.30) {$\Re\epar<0$};
+  \node[sublbl] at (0,-0.30) {$\Re\eperp<0$};
+  \node[align=center, font=\scriptsize, color=navy!60] at (0,-0.75)
+    {No propagating\\TM modes};
+  \node[below, font=\footnotesize\bfseries, color=navy] at (0,-1.6)
+    {(d) Metal-like};
+\end{scope}
+
+\end{tikzpicture}
+\caption{The four possible isofrequency contour (IFC) topologies for
+  transverse-magnetic (TM) polarised waves in a lossless uniaxial medium,
+  classified by the signs of the real parts of $\epar$ and $\eperp$.
+  \textbf{(a)} Both permittivities are positive: the IFC is a closed ellipse,
+  as in an ordinary dielectric crystal.
+  \textbf{(b)} $\Re\epar > 0$ and $\Re\eperp < 0$: the IFC is a Type-I open
+  hyperbola whose arms extend along the $k_\parallel$ axis.
+  \textbf{(c)} $\Re\epar < 0$ and $\Re\eperp > 0$: the IFC is a Type-II open
+  hyperbola whose arms extend along the $k_z$ axis.
+  \textbf{(d)} Both permittivities are negative: no propagating TM modes exist.
+  The Ni/TiO$_2$ multilayer studied in this report sits nominally in the
+  Type-II regime but, as we show in Chapters~\ref{ch:em_theory}
+  and~\ref{ch:results}, material losses close the open arms into a
+  loss-broadened ellipse.}
+\label{fig:ch1_ifc_regimes}
+\end{figure}
+
+% -----------------------------------------------------------------------------
+\section{The Ni/TiO\texorpdfstring{$_2$}{2} Multilayer System}
+% -----------------------------------------------------------------------------
+
+There are many ways to build a hyperbolic metamaterial. One of the most
+practical approaches at visible and near-infrared wavelengths is to stack thin
+alternating layers of a metal and a dielectric, with each layer far thinner
+than the wavelength of light. When the individual layers are thin enough, the
+electromagnetic wave cannot resolve them individually. The stack behaves as if
+it were a single homogeneous anisotropic medium, with effective permittivities
+determined by the properties of both constituent materials and by the fraction
+of the total thickness that is occupied by the metal.
+
+The metal used here is \textbf{nickel} (Ni). Nickel has strong metallic
+character at visible wavelengths: its real permittivity is large and negative
+across most of the visible spectrum, meaning that it reflects rather than
+transmits light. At the same time, nickel is compatible with standard physical
+vapour deposition and adheres well to oxide surfaces.
+
+The dielectric used here is \textbf{titanium dioxide} (TiO$_2$). Titanium
+dioxide is a high-index transparent oxide with a refractive index of
+approximately 2.4 at $650$\,nm. It is chemically stable, mechanically robust,
+and well-suited to thin film deposition. The combination of a high-index
+dielectric with a metallic component is a recipe for achieving sign changes in
+the effective permittivity at manageable metal fill fractions.
+
+The sample studied in this work consists of three repeating periods of
+TiO$_2$ and Ni, deposited by physical vapour deposition on a borosilicate
+glass substrate. The layer order, viewed from the air side downward, is
+\begin{equation}
+  \text{air} \;\Big|\;
+  \underbrace{\text{TiO}_2 \;\Big|\; \text{Ni}}_{\times\,3} \;\Big|\;
+  \text{SiO}_2 \;\text{(substrate)},
+  \label{eq:ch1_stack}
+\end{equation}
+with TiO$_2$ facing the air and Ni deposited first on the glass. The
+individual layer thicknesses were measured by focused ion beam cross-sectional
+transmission electron microscopy (FIB/TEM) and are listed in
+Table~\ref{tab:ch1_thicknesses}. The total stack thickness is approximately
+$44.3$\,nm, which is far below the shortest wavelength studied ($550$\,nm).
+This confirms that the stack is well within the subwavelength regime where the
+effective medium description is valid.
+
+\begin{table}[h]
+\centering
+\caption{FIB/TEM-measured individual layer thicknesses of the
+  [TiO$_2$/Ni]$\times$3 stack, listed from the air side down to the substrate.
+  The Ni fill fraction $\rho$, defined as the ratio of total Ni thickness to
+  total stack thickness, is $\rho = 16.80\,\mathrm{nm} /
+  44.31\,\mathrm{nm} \approx 0.379$.}
+\label{tab:ch1_thicknesses}
+\begin{tabular}{clc}
+\toprule
+Layer & Material & Thickness (nm) \\
+\midrule
+1 & TiO$_2$ & 9.171  \\
+2 & Ni       & 5.556  \\
+3 & TiO$_2$ & 10.361 \\
+4 & Ni       & 5.556  \\
+5 & TiO$_2$ & 7.981  \\
+6 & Ni       & 5.688  \\
+\midrule
+  & Total    & 44.313 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.55\textwidth]{figures/NiTiO2_cross_section.png}
+\caption{Cross-sectional TEM image of the [TiO$_2$/Ni]$\times$3 multilayer
+  stack on a SiO$_2$ substrate. The alternating bright and dark bands
+  correspond to TiO$_2$ and Ni layers respectively. The per-layer thicknesses
+  extracted from this image form the basis of all modelling in this report and
+  are listed in Table~\ref{tab:ch1_thicknesses}.}
+\label{fig:ch1_cross_section}
+\end{figure}
+
+% -----------------------------------------------------------------------------
+\section{The Central Scientific Question}
+% -----------------------------------------------------------------------------
+
+Given the structure described above, the natural question is: \emph{what does
+the isofrequency contour of this stack actually look like, and is it genuinely
+hyperbolic?}
+
+From a purely theoretical perspective, one might think this question has a
+simple answer. If we know the optical constants of bulk Ni and bulk TiO$_2$,
+and if we know the layer thicknesses and fill fraction, we can use the
+effective medium theory (derived in Chapter~\ref{ch:emt}) to compute the
+effective permittivities $\epar$ and $\eperp$ and then plot the IFC directly.
+
+This approach gives a useful starting point. Using the Ni optical constants
+from Johnson and Christy (1974)~\cite{johnson_christy} and the TiO$_2$
+constants from Jolivet et al.\ (2023)~\cite{jolivet} for amorphous ALD
+TiO$_2$, the effective medium theory predicts that $\Re(\epar)$ crosses zero
+near $607$\,nm, placing the stack nominally in the Type-II hyperbolic regime
+at longer wavelengths. However, there are several reasons why this prediction
+cannot be trusted without experimental verification.
+
+The first reason is that the Ni films in this stack are only $5$ to $6$\,nm
+thick. At this scale, the optical properties of a deposited metal film can
+differ substantially from those of the bulk material. Electrons in a thin film
+scatter from the surfaces and grain boundaries far more frequently than in a
+bulk sample, and this additional scattering changes the optical constants. In
+addition, nickel oxidises rapidly in air, forming a thin NiO layer at each
+surface. NiO is an insulator with very different optical properties from
+metallic Ni. Both of these effects tend to make the deposited films less
+metallic than the bulk prediction suggests.
+
+The second reason is that the effective medium theory itself is an
+approximation. It assumes that the layer interfaces are perfectly sharp and
+that there is no interdiffusion between the Ni and TiO$_2$. In a real
+sputtered film deposited at room temperature, some degree of interfacial
+roughness and atomic mixing is unavoidable. These effects alter the effective
+response of the stack in ways that are difficult to predict without a
+measurement.
+
+The third and most physically interesting reason is the role of loss. Even if
+the effective medium prediction were perfectly accurate, the Ni layers carry a
+very large imaginary part of the permittivity, meaning they absorb light
+strongly. In Chapter~\ref{ch:em_theory} we will show rigorously that loss
+changes the topology of the IFC. What appears as an open hyperbola in a
+lossless calculation becomes a closed, loss-broadened contour in reality.
+Whether the IFC is truly open or merely appears open depends on quantitative
+details, not just the sign of the real permittivity.
+
+For all of these reasons, the shape of the IFC must be determined from a
+measurement of the actual fabricated sample rather than inferred from bulk
+databases alone. This measurement-based determination of the IFC is the
+experimental and computational challenge that drives the entire methodology
+developed in this report.
+
+% -----------------------------------------------------------------------------
+\section{Why Simple Intensity Measurements Are Not Enough}
+% -----------------------------------------------------------------------------
+
+The most straightforward way to measure the optical response of a thin film is
+to shine light on it and record how much is reflected and how much is
+transmitted. If we do this at many angles of incidence and over a range of
+wavelengths, we obtain $R(\theta, \lambda)$ and $T(\theta, \lambda)$: the
+angle-resolved and spectrally resolved reflectance and transmittance. From
+these data, one might hope to extract both $\epar$ and $\eperp$ by fitting a
+model to the measurements.
+
+In principle this is correct: the transfer matrix method, which we derive in
+Chapter~\ref{ch:tmm_derivation}, predicts exactly what $R$ and $T$ should be
+for any given set of material parameters. One can in principle search for the
+parameters that best reproduce the measured data.
+
+In practice, a fundamental problem arises. The out-of-plane permittivity
+$\eperp$ enters the reflectance and transmittance of a subwavelength film only
+through a very small correction term. We derive this explicitly in
+Chapter~\ref{ch:why_rt_failed}. For a $44$\,nm film, this correction
+contributes roughly $2\%$ of the total signal at the largest accessible angles
+of incidence, which falls below the level of experimental noise in any
+realistic measurement. In a statistical analysis, the uncertainty on the
+extracted $\eperp$ from $R$ and $T$ alone turns out to be orders of magnitude
+larger than the value itself. The measurement simply does not contain enough
+information to determine $\eperp$.
+
+The physical reason for this insensitivity is not a technical limitation that
+better instruments could overcome. It is a fundamental consequence of the
+thinness of the film. The out-of-plane permittivity $\eperp$ controls how the
+out-of-plane component of the electric field, $E_z$, evolves as the wave
+travels through the stack. But in a $44$\,nm film at $700$\,nm wavelength, the
+optical phase accumulated across the stack in the $z$ direction is small:
+$k_0 d \approx 0.40$ radians. The wave traverses the entire film before the
+$\eperp$-dependent phase has a chance to grow to a detectable level.
+
+This is why the work described in this report uses \textbf{spectroscopic
+ellipsometry} as the primary measurement technique.
+
+Ellipsometry measures not just the intensity of the reflected light, but the
+\textbf{change in polarisation state} that occurs upon reflection. Specifically,
+it records the complex ratio of the reflection coefficients for $p$-polarised
+and $s$-polarised light. This ratio carries both an amplitude component and a
+phase component. The phase component is denoted $\Delta$, and it is
+particularly sensitive to optical path length differences between the two
+polarisations inside the stack. Crucially, the $p$-polarised wave has an
+out-of-plane electric field component $E_z$ that the $s$-polarised wave does
+not. The ellipsometric phase $\Delta$ therefore probes the out-of-plane
+response in a way that the intensities $R$ and $T$ cannot.
+
+We show in Chapter~\ref{ch:why_rt_failed} that the deep minimum in $\Delta$
+near the pseudo-Brewster angle, which occurs around $75^\circ$ angle of
+incidence for this sample, provides a detectable and identifiable signature of
+$\eperp$ even in a $44$\,nm film. This is the key measurement that makes the
+tensor extraction possible.
+
+% -----------------------------------------------------------------------------
+\section{Road Map of This Report}
+% -----------------------------------------------------------------------------
+
+The remainder of this report builds the complete picture from first principles,
+following a logical chain from Maxwell's equations through to the final
+reconstructed IFC.
+
+\textbf{Chapter~\ref{ch:em_theory}} derives the electromagnetic theory of
+wave propagation in a uniaxial medium, starting from Maxwell's curl equations.
+We obtain the TM dispersion relation that gives the IFC equation, explain why
+hyperbolicity is a TM-only phenomenon, and work through the full lossy IFC
+derivation following Jackson et al.\ (2024)~\cite{jackson2024}, showing
+analytically why material loss closes the open hyperboloid into a bounded
+surface with a finite maximum wavevector.
+
+\textbf{Chapter~\ref{ch:emt}} derives the effective medium theory for a
+metal-dielectric multilayer from the electromagnetic boundary conditions. We
+obtain the arithmetic mean formula for $\epar$ and the harmonic mean formula
+for $\eperp$, and explain why the two components average differently. We apply
+the theory numerically to the Ni/TiO$_2$ system and discuss its limitations
+honestly.
+
+\textbf{Chapter~\ref{ch:sample_measurements}} describes the sample in detail
+and presents both sets of experimental measurements used in this work:
+angle-resolved reflectance and transmittance data, and the spectroscopic
+ellipsometry data collected on a J.A.\ Woollam M-2000 variable angle
+spectroscopic ellipsometer at eight angles of incidence from $45^\circ$ to
+$80^\circ$.
+
+\textbf{Chapter~\ref{ch:tmm_derivation}} derives the transfer matrix method
+step by step, beginning from the boundary conditions at a single planar
+interface. We build the formalism layer by layer until we have a complete model
+for the full six-layer stack using the exact FIB/TEM thicknesses. We extend
+the standard isotropic TMM to handle uniaxial anisotropic layers, and we
+derive the ellipsometric observables $\Psi$, $\Delta$, and the Stokes-like
+parameters $N$, $C$, $S$ from the complex reflection amplitudes.
+
+\textbf{Chapter~\ref{ch:forward_validation}} validates the forward model by
+comparing its predictions to the measured $R$, $T$, and ellipsometric data.
+We discuss the systematic discrepancy that appears when bulk Ni constants are
+used, and identify its physical origins in thin-film electron scattering and
+surface oxidation.
+
+\textbf{Chapter~\ref{ch:why_rt_failed}} explains in full detail why the
+reflectance and transmittance data alone are insufficient to recover $\eperp$,
+and why ellipsometry changes the situation. This chapter contains the
+thin-film expansion argument, a Monte Carlo sensitivity analysis, and a
+discussion of the pseudo-Brewster angle signature that makes the ellipsometric
+extraction of $\eperp$ possible.
+
+\textbf{Chapter~\ref{ch:inverse_methodology}} describes the inverse extraction
+procedure: how we set up the optimisation problem, which parameters are fixed
+and which are free, how the cost function is constructed in the $N$, $C$, $S$
+space, and how the Levenberg-Marquardt algorithm finds the best-fit tensor at
+each wavelength.
+
+\textbf{Chapter~\ref{ch:results}} presents the extracted permittivity spectra
+$\epar(\lambda)$ and $\eperp(\lambda)$ with uncertainty estimates, compares
+them to the EMT prediction, and uses the Jackson et al.\ (2024) lossy
+complex-wavevector method to reconstruct the final isofrequency contour.
+
+\textbf{Chapter~\ref{ch:limitations}} discusses the limitations of the present
+approach and outlines the next experimental steps, in particular the total
+internal reflection ellipsometry experiment using a ZnSe prism coupler to
+access wavevectors beyond the air light line.
+
+Throughout this report we use SI units and the time-harmonic convention
+$e^{-\ii\omega t}$. All permittivities are complex, written as
+$\eps = \eps_1 + \ii\,\eps_2$ with $\eps_2 \geq 0$ for a passive absorbing
+material. The in-plane wavevector is written $k_\parallel$ or $k_x$
+interchangeably. The wavevector component along the optic axis is $k_z$ or
+$k_\perp$.
+
+\begin{resultbox}
+\textbf{One-sentence summary of this report.}
+We measure the polarisation state of light reflected from a $44$\,nm
+Ni/TiO$_2$ multilayer at eight angles of incidence across $450$ to $1000$\,nm,
+fit an anisotropic transfer matrix model to extract the permittivity tensor
+$(\epar(\lambda),\,\eperp(\lambda))$, and reconstruct the isofrequency
+contour, finding a closed loss-broadened ellipse with no open hyperbolic
+behaviour across the measured spectral window.
+\end{resultbox}
