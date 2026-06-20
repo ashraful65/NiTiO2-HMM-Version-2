@@ -1,0 +1,167 @@
+\documentclass[11pt,a4paper]{report}
+
+% -- Geometry ------------------------------------------------------------------
+\usepackage[a4paper, margin=1in, headheight=14pt]{geometry}
+
+% -- Fonts & encoding ----------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+% -- Mathematics ---------------------------------------------------------------
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{bm}
+\usepackage{mathtools}
+
+% -- Graphics & colour ---------------------------------------------------------
+\usepackage{graphicx}
+\usepackage[dvipsnames, svgnames, x11names]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, shapes.geometric,
+                decorations.markings, patterns}
+
+% -- Tables --------------------------------------------------------------------
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+
+% -- Captions & floats ---------------------------------------------------------
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+
+% -- Lists ---------------------------------------------------------------------
+\usepackage{enumitem}
+
+% -- Coloured boxes ------------------------------------------------------------
+\usepackage[most]{tcolorbox}
+
+% -- Headers & footers ---------------------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\leftmark}
+\fancyhead[R]{\small Ni/TiO$_2$ HMM Characterisation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% -- Hyperlinks ----------------------------------------------------------------
+\usepackage[colorlinks=true, linkcolor=KITgreen, citecolor=KITgreen,
+            urlcolor=KITblue, bookmarks=true]{hyperref}
+
+% -- Bibliography --------------------------------------------------------------
+\usepackage[numbers, sort&compress]{natbib}
+\bibliographystyle{unsrtnat}
+
+% -- KIT colour palette --------------------------------------------------------
+\definecolor{KITgreen}{HTML}{009682}
+\definecolor{KITblue}{HTML}{4664AA}
+\definecolor{navy}{HTML}{0D1B2A}
+\definecolor{coral}{HTML}{D85A30}
+\definecolor{boxbg}{HTML}{F0F6F6}
+\definecolor{warnbg}{HTML}{FFF1ED}
+
+% -- Custom boxes --------------------------------------------------------------
+\newtcolorbox{resultbox}{
+  colback=boxbg, colframe=KITgreen, boxrule=0.6pt,
+  arc=2pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  fonttitle=\bfseries, title={Result}}
+
+\newtcolorbox{warnbox}{
+  colback=warnbg, colframe=coral, boxrule=0.6pt,
+  arc=2pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  fonttitle=\bfseries, title={Important}}
+
+\newtcolorbox{derivbox}{
+  colback=KITblue!5, colframe=KITblue, boxrule=0.6pt,
+  arc=2pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  fonttitle=\bfseries, title={Derivation}}
+
+% -- Global macros -------------------------------------------------------------
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\ee}{\mathrm{e}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\epar}{\eps_{\parallel}}
+\newcommand{\eperp}{\eps_{\perp}}
+\newcommand{\nt}{\tilde{n}}
+\newcommand{\kt}{\tilde{k}}
+\newcommand{\kzero}{k_0}
+\newcommand{\kvec}{\bm{k}}
+\newcommand{\Evec}{\bm{E}}
+\newcommand{\Hvec}{\bm{H}}
+\newcommand{\Dvec}{\bm{D}}
+\newcommand{\Bvec}{\bm{B}}
+\newcommand{\rp}{r_{\mathrm{p}}}
+\newcommand{\rs}{r_{\mathrm{s}}}
+\newcommand{\tp}{t_{\mathrm{p}}}
+\newcommand{\ts}{t_{\mathrm{s}}}
+\newcommand{\lam}{\lambda}
+
+% -- Chapter title style -------------------------------------------------------
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{KITgreen}}
+  {\chaptertitlename\ \thechapter}{16pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+
+% =============================================================================
+\begin{document}
+
+% -- Title page ----------------------------------------------------------------
+\begin{titlepage}
+\centering
+\vspace*{2.5cm}
+{\color{KITgreen}\rule{\linewidth}{1.2pt}}\par
+\vspace{0.6cm}
+{\LARGE\bfseries Optical Characterisation of a Ni/TiO$_2$\par}
+\vspace{0.3cm}
+{\LARGE\bfseries Hyperbolic Metamaterial\par}
+\vspace{0.3cm}
+{\large From Maxwell's Equations to Isofrequency Contour Reconstruction\par}
+\vspace{0.4cm}
+{\color{KITgreen}\rule{\linewidth}{1.2pt}}\par
+\vspace{1.4cm}
+{\large\itshape
+  Theory, effective-medium modelling, transfer matrix derivation,\\[4pt]
+  ellipsometric inverse extraction, and IFC reconstruction\par}
+\vfill
+\begin{tabular}{rl}
+  \textbf{Author}      & Mohammad Ashraful Haque \\[4pt]
+  \textbf{Affiliation} & Master's Student, KSOP \\[2pt]
+                       & Research Assistant, Institute of Nanotechnology, KIT \\[2pt]
+                       & Research Assistant, Deeplight GmbH \\[6pt]
+  \textbf{Supervisor}  & Prof.\ Dr.\ Maryna L.\ Meretska \\[2pt]
+                       & Institute of Nanotechnology, KIT \\[6pt]
+  \textbf{Date}        & \today
+\end{tabular}
+\vspace{2.0cm}
+\end{titlepage}
+
+% -- Abstract ------------------------------------------------------------------
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\input{chapters/abstract}
+\clearpage
+
+% -- Table of contents ---------------------------------------------------------
+\tableofcontents
+\clearpage
+
+% -- Chapters ------------------------------------------------------------------
+\include{chapters/ch01_introduction}
+\include{chapters/ch02_em_theory}
+\include{chapters/ch03_emt}
+\include{chapters/ch04_sample_measurements}
+\include{chapters/ch05_tmm_derivation}
+\include{chapters/ch06_forward_validation}
+\include{chapters/ch07_why_rt_failed}
+\include{chapters/ch08_inverse_methodology}
+\include{chapters/ch09_results}
+\include{chapters/ch10_limitations}
+
+% -- Bibliography --------------------------------------------------------------
+\bibliography{references}
+
+\end{document}
