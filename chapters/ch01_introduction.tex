@@ -130,13 +130,14 @@ nanoscale heat transfer between objects.
     {(a) Elliptic / dielectric};
 \end{scope}
 
-%% ---- Panel B: Type-I Hyperbolic ----
+%% ---- Panel B: Type-I Hyperbolic (arms along k_parallel) ----
+%% domain starts at 0.44 so that 0.44^2 = 0.1936 > 0.18 (avoids sqrt of negative)
 \begin{scope}[shift={(0.8, 2.3)}]
   \draw[axis] (-1.4,0) -- (1.5,0) node[right, lbl] {$k_\parallel/k_0$};
   \draw[axis] (0,-1.4) -- (0,1.5) node[above, lbl] {$k_z/k_0$};
   \foreach \sgny in {1,-1} {
     \foreach \sgnx in {1,-1} {
-      \draw[hypcurve, domain=0.42:1.35, samples=60]
+      \draw[hypcurve, domain=0.44:1.35, samples=60]
         plot ({\sgnx*\x}, {\sgny*0.58*sqrt(\x*\x - 0.18)});
     }
   }
@@ -146,7 +147,8 @@ nanoscale heat transfer between objects.
     {(b) Type-I Hyperbolic};
 \end{scope}
 
-%% ---- Panel C: Type-II Hyperbolic ----
+%% ---- Panel C: Type-II Hyperbolic (arms along k_z) ----
+%% domain starts at 0.38 so that 0.38^2 = 0.1444 > 0.14 (safe)
 \begin{scope}[shift={(-4.8, -1.9)}]
   \draw[axis] (-1.4,0) -- (1.5,0) node[right, lbl] {$k_\parallel/k_0$};
   \draw[axis] (0,-1.4) -- (0,1.5) node[above, lbl] {$k_z/k_0$};
