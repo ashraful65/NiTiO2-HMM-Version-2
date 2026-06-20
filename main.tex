@@ -15,10 +15,19 @@
 
 % -- Graphics & colour ---------------------------------------------------------
 \usepackage{graphicx}
+\graphicspath{{figures/}}          % all figures live in figures/
 \usepackage[dvipsnames, svgnames, x11names]{xcolor}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning, calc, shapes.geometric,
                 decorations.markings, patterns}
+
+% -- KIT colour palette  (MUST come before hyperref) ---------------------------
+\definecolor{KITgreen}{HTML}{009682}
+\definecolor{KITblue}{HTML}{4664AA}
+\definecolor{navy}{HTML}{0D1B2A}
+\definecolor{coral}{HTML}{D85A30}
+\definecolor{boxbg}{HTML}{F0F6F6}
+\definecolor{warnbg}{HTML}{FFF1ED}
 
 % -- Tables --------------------------------------------------------------------
 \usepackage{booktabs}
@@ -45,23 +54,22 @@
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 
-% -- Hyperlinks ----------------------------------------------------------------
+% -- Chapter title style -------------------------------------------------------
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{KITgreen}}
+  {\chaptertitlename\ \thechapter}{16pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+
+% -- Bibliography  (MUST come before hyperref) ---------------------------------
+\usepackage[numbers,sort&compress]{natbib}
+\bibliographystyle{unsrtnat}
+
+% -- Hyperlinks  (MUST come last among these packages) -------------------------
 \usepackage[colorlinks=true, linkcolor=KITgreen, citecolor=KITgreen,
             urlcolor=KITblue, bookmarks=true]{hyperref}
 
-% -- Bibliography --------------------------------------------------------------
-\usepackage[numbers, sort&compress]{natbib}
-\bibliographystyle{unsrtnat}
-
-% -- KIT colour palette --------------------------------------------------------
-\definecolor{KITgreen}{HTML}{009682}
-\definecolor{KITblue}{HTML}{4664AA}
-\definecolor{navy}{HTML}{0D1B2A}
-\definecolor{coral}{HTML}{D85A30}
-\definecolor{boxbg}{HTML}{F0F6F6}
-\definecolor{warnbg}{HTML}{FFF1ED}
-
-% -- Custom boxes --------------------------------------------------------------
+% -- Custom boxes (colours already defined above) ------------------------------
 \newtcolorbox{resultbox}{
   colback=boxbg, colframe=KITgreen, boxrule=0.6pt,
   arc=2pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
@@ -98,13 +106,6 @@
 \newcommand{\tp}{t_{\mathrm{p}}}
 \newcommand{\ts}{t_{\mathrm{s}}}
 \newcommand{\lam}{\lambda}
-
-% -- Chapter title style -------------------------------------------------------
-\usepackage{titlesec}
-\titleformat{\chapter}[display]
-  {\normalfont\huge\bfseries\color{KITgreen}}
-  {\chaptertitlename\ \thechapter}{16pt}{\Huge}
-\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
 
 % =============================================================================
 \begin{document}
