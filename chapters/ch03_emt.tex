@@ -82,7 +82,7 @@ layer planes (along the $x$ or $y$ direction). At every Ni/TiO$_2$ interface,
 this field is tangential. Condition~\eqref{eq:ch3_E_tangential} therefore
 requires the same tangential field in both materials:
 \begin{equation}
-  E_\parallel^{(\text{Ni})} = E_\parallel^{(\text{TiO}_2)} = E_\parallel.
+  E_\parallel^{(\text{Ni})} = E_\parallel^{(\text{TiO}_{2})} = E_\parallel.
   \label{eq:ch3_E_same}
 \end{equation}
 The two layers experience the same electric field. The macroscopic displacement
@@ -90,16 +90,16 @@ field is the volume-weighted average of the displacements in each layer. If Ni
 occupies a fraction $\rho$ of the total stack thickness and TiO$_2$ occupies
 the remaining fraction $(1-\rho)$, then
 \begin{equation}
-  D_\parallel = \rho\,\eps_0\eps_\text{Ni}\,E_\parallel
-               + (1-\rho)\,\eps_0\eps_\text{TiO_2}\,E_\parallel
-              = \eps_0\!\left[\rho\,\eps_\text{Ni}
-                + (1-\rho)\,\eps_\text{TiO_2}\right]E_\parallel.
+  D_\parallel = \rho\,\eps_0\eps_{\mathrm{Ni}}\,E_\parallel
+               + (1-\rho)\,\eps_0\eps_{\mathrm{TiO}_{2}}\,E_\parallel
+              = \eps_0\!\left[\rho\,\eps_{\mathrm{Ni}}
+                + (1-\rho)\,\eps_{\mathrm{TiO}_{2}}\right]E_\parallel.
   \label{eq:ch3_D_parallel}
 \end{equation}
 Comparing with the defining relation $D_\parallel = \eps_0\epar E_\parallel$
 gives
 \begin{equation}
-  \boxed{\epar = \rho\,\eps_\text{Ni} + (1-\rho)\,\eps_\text{TiO_2}.}
+  \boxed{\epar = \rho\,\eps_{\mathrm{Ni}} + (1-\rho)\,\eps_{\mathrm{TiO}_{2}}.}
   \label{eq:ch3_eps_par}
 \end{equation}
 This is the \textbf{arithmetic mean} (volume average) of the two permittivities,
@@ -117,35 +117,35 @@ planes (along the $z$ direction). At every interface, this field is normal.
 Condition~\eqref{eq:ch3_D_normal} now applies: in the absence of free charges
 at the interface, the normal component of $\Dvec$ is continuous:
 \begin{equation}
-  D_\perp^{(\text{Ni})} = D_\perp^{(\text{TiO}_2)} = D_\perp.
+  D_\perp^{(\text{Ni})} = D_\perp^{(\text{TiO}_{2})} = D_\perp.
   \label{eq:ch3_D_same}
 \end{equation}
 The displacement field is the same in both layers, but the electric fields are
 different:
 \begin{equation}
-  E_\perp^{(\text{Ni})} = \frac{D_\perp}{\eps_0\eps_\text{Ni}},
+  E_\perp^{(\text{Ni})} = \frac{D_\perp}{\eps_0\eps_{\mathrm{Ni}}},
   \qquad
-  E_\perp^{(\text{TiO}_2)} = \frac{D_\perp}{\eps_0\eps_\text{TiO_2}}.
+  E_\perp^{(\text{TiO}_{2})} = \frac{D_\perp}{\eps_0\eps_{\mathrm{TiO}_{2}}}.
   \label{eq:ch3_E_different}
 \end{equation}
 The macroscopic electric field is the volume-weighted average of the fields in
 each layer:
 \begin{equation}
-  E_\perp = \rho\,E_\perp^{(\text{Ni})} + (1-\rho)\,E_\perp^{(\text{TiO}_2)}
+  E_\perp = \rho\,E_\perp^{(\text{Ni})} + (1-\rho)\,E_\perp^{(\text{TiO}_{2})}
   = \frac{D_\perp}{\eps_0}\!\left[
-      \frac{\rho}{\eps_\text{Ni}} + \frac{1-\rho}{\eps_\text{TiO_2}}
+      \frac{\rho}{\eps_{\mathrm{Ni}}} + \frac{1-\rho}{\eps_{\mathrm{TiO}_{2}}}
     \right].
   \label{eq:ch3_E_average}
 \end{equation}
 Comparing with $E_\perp = D_\perp/(\eps_0\eperp)$ gives
 \begin{equation}
-  \frac{1}{\eperp} = \frac{\rho}{\eps_\text{Ni}} + \frac{1-\rho}{\eps_\text{TiO_2}},
+  \frac{1}{\eperp} = \frac{\rho}{\eps_{\mathrm{Ni}}} + \frac{1-\rho}{\eps_{\mathrm{TiO}_{2}}},
   \label{eq:ch3_eps_perp_inv}
 \end{equation}
 or equivalently
 \begin{equation}
-  \boxed{\eperp = \frac{\eps_\text{Ni}\,\eps_\text{TiO_2}}
-                       {\rho\,\eps_\text{TiO_2} + (1-\rho)\,\eps_\text{Ni}}.}
+  \boxed{\eperp = \frac{\eps_{\mathrm{Ni}}\,\eps_{\mathrm{TiO}_{2}}}
+                       {\rho\,\eps_{\mathrm{TiO}_{2}} + (1-\rho)\,\eps_{\mathrm{Ni}}}.}
   \label{eq:ch3_eps_perp}
 \end{equation}
 This is the \textbf{harmonic mean} (reciprocal average) of the two
@@ -171,11 +171,11 @@ has nothing to do with approximations or material models.
 %% === Left panel: tangential E (in-plane field) ===
 \begin{scope}[shift={(-4.5, 0)}]
 
-  % Layer stack (3 layers shown)
-  \fill[KITblue!12] (-1.8,-2.0) rectangle (1.8,-0.8);  % TiO2
-  \fill[gray!35]    (-1.8,-0.8) rectangle (1.8, 0.2);  % Ni
-  \fill[KITblue!12] (-1.8, 0.2) rectangle (1.8, 1.4);  % TiO2
-  \fill[gray!35]    (-1.8, 1.4) rectangle (1.8, 2.0);  % Ni (partial)
+  % Layer stack (alternating TiO2 and Ni)
+  \fill[KITblue!12] (-1.8,-2.0) rectangle (1.8,-0.8);
+  \fill[gray!35]    (-1.8,-0.8) rectangle (1.8, 0.2);
+  \fill[KITblue!12] (-1.8, 0.2) rectangle (1.8, 1.4);
+  \fill[gray!35]    (-1.8, 1.4) rectangle (1.8, 2.0);
 
   % Interface lines
   \foreach \y in {-0.8, 0.2, 1.4} {
@@ -193,17 +193,14 @@ has nothing to do with approximations or material models.
     \draw[efield, color=KITgreen] (-1.2, \y) -- (0.8, \y);
   }
 
-  % E label
   \node[right, lbl, color=KITgreen] at (0.9, 0.0) {$E_\parallel$};
   \node[above, lbl] at (0, -0.05) {(same in all layers)};
 
-  % Boundary condition note
   \node[below, align=center, font=\footnotesize, color=navy] at (0,-2.3)
     {Tangential $\Evec$: continuous\\
-     $E^{(\text{Ni})} = E^{(\text{TiO}_2)}$\\
+     $E^{(\mathrm{Ni})} = E^{(\mathrm{TiO}_{2})}$\\
      $\Rightarrow$ \textbf{arithmetic mean}};
 
-  % z axis
   \draw[-{Latex[length=2mm]}, color=navy!50]
     (1.9,-2.0) -- (1.9, 2.0) node[above, font=\scriptsize] {$z$};
   \draw[-{Latex[length=2mm]}, color=navy!50]
@@ -214,18 +211,15 @@ has nothing to do with approximations or material models.
 %% === Right panel: normal D (out-of-plane field) ===
 \begin{scope}[shift={(2.0, 0)}]
 
-  % Layer stack
   \fill[KITblue!12] (-1.8,-2.0) rectangle (1.8,-0.8);
   \fill[gray!35]    (-1.8,-0.8) rectangle (1.8, 0.2);
   \fill[KITblue!12] (-1.8, 0.2) rectangle (1.8, 1.4);
   \fill[gray!35]    (-1.8, 1.4) rectangle (1.8, 2.0);
 
-  % Interface lines
   \foreach \y in {-0.8, 0.2, 1.4} {
     \draw[ifc] (-1.8,\y) -- (1.8,\y);
   }
 
-  % Layer labels
   \node[lbl, color=KITblue!80!black] at (0, -1.4) {TiO$_2$};
   \node[lbl, color=gray!60!black]    at (0, -0.3) {Ni};
   \node[lbl, color=KITblue!80!black] at (0,  0.8) {TiO$_2$};
@@ -239,14 +233,12 @@ has nothing to do with approximations or material models.
     \draw[efield, color=coral] (\x, 1.5) -- (\x, 1.95);
   }
 
-  % D label
   \node[right, lbl, color=coral] at (1.0, -0.3) {$D_\perp$};
   \node[right, lbl, font=\scriptsize] at (1.0, -0.7) {(same in all layers)};
 
-  % Boundary condition note
   \node[below, align=center, font=\footnotesize, color=navy] at (0,-2.3)
     {Normal $\Dvec$: continuous\\
-     $D^{(\text{Ni})} = D^{(\text{TiO}_2)}$\\
+     $D^{(\mathrm{Ni})} = D^{(\mathrm{TiO}_{2})}$\\
      $\Rightarrow$ \textbf{harmonic mean}};
 
 \end{scope}
@@ -257,14 +249,15 @@ has nothing to do with approximations or material models.
   it is tangential to every interface. The tangential boundary condition forces
   the same field $E_\parallel$ in every layer, regardless of permittivity. The
   macroscopic displacement is a volume-weighted sum of the individual
-  displacements, giving the arithmetic mean $\epar = \rho\eps_\text{Ni} +
-  (1-\rho)\eps_\text{TiO_2}$. \textbf{Right:} when the field is perpendicular
-  to the layer planes (out-of-plane direction), it is normal to every interface.
-  The normal boundary condition forces the same displacement $D_\perp$ in every
-  layer. The macroscopic field is a volume-weighted sum of the layer fields,
-  giving the harmonic mean $1/\eperp = \rho/\eps_\text{Ni} +
-  (1-\rho)/\eps_\text{TiO_2}$. The two components average differently because
-  they satisfy different boundary conditions.}
+  displacements, giving the arithmetic mean $\epar = \rho\eps_{\mathrm{Ni}} +
+  (1-\rho)\eps_{\mathrm{TiO}_{2}}$. \textbf{Right:} when the field is
+  perpendicular to the layer planes (out-of-plane direction), it is normal to
+  every interface. The normal boundary condition forces the same displacement
+  $D_\perp$ in every layer. The macroscopic field is a volume-weighted sum of
+  the layer fields, giving the harmonic mean
+  $1/\eperp = \rho/\eps_{\mathrm{Ni}} + (1-\rho)/\eps_{\mathrm{TiO}_{2}}$.
+  The two components average differently because they satisfy different boundary
+  conditions.}
 \label{fig:ch3_bc_cartoon}
 \end{figure}
 
@@ -276,7 +269,7 @@ The results of Sections~3.3 and~3.4 reveal a fundamental asymmetry. The
 in-plane permittivity $\epar$ is the arithmetic mean of the two constituent
 permittivities. The out-of-plane permittivity $\eperp$ is the harmonic mean.
 These two averages behave very differently when one constituent is a metal with
-$\Re(\eps_\text{Ni}) < 0$.
+$\Re(\eps_{\mathrm{Ni}}) < 0$.
 
 For the \textbf{arithmetic mean} $\epar$, the metallic and dielectric
 contributions compete directly. The Ni contribution, weighted by $\rho = 0.379$,
@@ -288,19 +281,20 @@ metal in the in-plane direction.
 For the \textbf{harmonic mean} $\eperp$, the situation is different. The
 harmonic mean is dominated by the component with the \emph{smaller} reciprocal,
 which is the component with the \emph{larger} absolute permittivity. Since Ni
-has $|\eps_\text{Ni}| \gg |\eps_\text{TiO_2}|$ at visible wavelengths, the
-$1/\eps_\text{Ni}$ term is much smaller than the $1/\eps_\text{TiO_2}$ term.
-The harmonic mean is therefore dominated by the TiO$_2$ response, and
-$\Re(\eperp)$ remains close to the TiO$_2$ permittivity throughout the
-visible spectrum.
+has $|\eps_{\mathrm{Ni}}| \gg |\eps_{\mathrm{TiO}_{2}}|$ at visible wavelengths,
+the $1/\eps_{\mathrm{Ni}}$ term is much smaller than the
+$1/\eps_{\mathrm{TiO}_{2}}$ term. The harmonic mean is therefore dominated by
+the TiO$_2$ response, and $\Re(\eperp)$ remains close to the TiO$_2$
+permittivity throughout the visible spectrum.
 
 \begin{resultbox}
 \textbf{Physical summary.}
-$\epar$ is controlled by Ni because the in-plane field experiences both materials
-\emph{in parallel}, and the metallic character of Ni pulls the average metallic.
-$\eperp$ is controlled by TiO$_2$ because the out-of-plane field experiences
-both materials \emph{in series}, and the large $|\eps_\text{Ni}|$ means the Ni
-layer acts like a short circuit that leaves the total response insensitive to it.
+$\epar$ is controlled by Ni because the in-plane field experiences both
+materials \emph{in parallel}, and the metallic character of Ni pulls the
+average metallic. $\eperp$ is controlled by TiO$_2$ because the out-of-plane
+field experiences both materials \emph{in series}, and the large
+$|\eps_{\mathrm{Ni}}|$ means the Ni layer acts like a short circuit that leaves
+the total response insensitive to it.
 \end{resultbox}
 
 This asymmetry is precisely what allows the in-plane and out-of-plane
@@ -332,7 +326,7 @@ per-layer thicknesses from Table~\ref{tab:ch1_thicknesses}:
 \end{align}
 This fill fraction is the single most important geometric parameter for the
 optical properties of the stack. If $\rho$ were much smaller (dilute metal
-limit), $\epar$ would be close to $\eps_\text{TiO_2}$ and no hyperbolic
+limit), $\epar$ would be close to $\eps_{\mathrm{TiO}_{2}}$ and no hyperbolic
 behaviour would occur. If $\rho$ were close to 1 (dense metal limit), both
 components would be metallic. The value $\rho = 0.379$ places the stack in
 a regime where the arithmetic mean $\epar$ is expected to cross zero near the
@@ -350,7 +344,7 @@ Christy~\cite{johnson_christy}, measured on evaporated Ni films by ellipsometry
 at room temperature. These are the most widely cited Ni optical data in the
 visible and near-infrared range. The data give complex refractive indices
 $n + \ii\kappa$ from which we derive
-$\eps_\text{Ni} = (n+\ii\kappa)^2 = (n^2-\kappa^2) + \ii\,2n\kappa$.
+$\eps_{\mathrm{Ni}} = (n+\ii\kappa)^2 = (n^2-\kappa^2) + \ii\,2n\kappa$.
 
 For \textbf{amorphous TiO$_2$} deposited by atomic layer deposition (ALD), we
 use the optical constants of Jolivet et al.\ (2023)~\cite{jolivet}. Amorphous
@@ -373,8 +367,8 @@ materials at selected wavelengths across our measurement window.
 \begin{tabular}{c r@{$\,+\,$}l r@{$\,+\,$}l}
 \toprule
 $\lambda$ (nm)
-  & \multicolumn{2}{c}{$\eps_\text{Ni}$}
-  & \multicolumn{2}{c}{$\eps_\text{TiO$_2$}$} \\
+  & \multicolumn{2}{c}{$\eps_{\mathrm{Ni}}$}
+  & \multicolumn{2}{c}{$\eps_{\mathrm{TiO}_{2}}$} \\
 \midrule
 450  & $-9.1$   & $\ii\,16.2$ & $6.12$ & $\ii\,0.02$ \\
 550  & $-12.0$  & $\ii\,19.0$ & $5.85$ & $\ii\,0.01$ \\
@@ -387,7 +381,7 @@ $\lambda$ (nm)
 \end{table}
 
 Several features of this table are immediately relevant to the EMT analysis.
-The real part of $\eps_\text{Ni}$ is large and negative across the entire
+The real part of $\eps_{\mathrm{Ni}}$ is large and negative across the entire
 range, while the imaginary part is also large, confirming the heavily lossy
 metallic character discussed in Chapter~\ref{ch:em_theory}. The permittivity
 of TiO$_2$ is nearly real and positive throughout, confirming its transparent
@@ -444,7 +438,7 @@ for a harmonic-mean response dominated by the high-index dielectric.
 
 \textbf{Large imaginary parts throughout.} The imaginary part of $\epar$ is
 between 5 and 8 across the window, while $\Im(\eperp)$ is small but non-zero.
-The large $\Im(\epar)$ comes directly from the large $\Im(\eps_\text{Ni})$
+The large $\Im(\epar)$ comes directly from the large $\Im(\eps_{\mathrm{Ni}})$
 weighted by $\rho = 0.379$.
 
 Figure~\ref{fig:ch3_emt_prediction} shows the EMT predictions plotted against
@@ -468,19 +462,21 @@ the experimentally measured R/T data for context.
 
 The wavelength at which $\Re(\epar) = 0$ is called the epsilon-near-zero (ENZ)
 point, and it plays a special role in the physics of the stack. At this
-wavelength, the arithmetic mean condition $\rho\,\Re(\eps_\text{Ni}) +
-(1-\rho)\,\Re(\eps_\text{TiO_2}) = 0$ is satisfied. Solving for $\lambda$:
+wavelength, the arithmetic mean condition $\rho\,\Re(\eps_{\mathrm{Ni}}) +
+(1-\rho)\,\Re(\eps_{\mathrm{TiO}_{2}}) = 0$ is satisfied. Solving for
+$\lambda$:
 \begin{equation}
-  \Re(\eps_\text{Ni}(\lambda_\text{ENZ}))
-  = -\frac{1-\rho}{\rho}\,\Re(\eps_\text{TiO_2}(\lambda_\text{ENZ}))
+  \Re(\eps_{\mathrm{Ni}}(\lambda_\text{ENZ}))
+  = -\frac{1-\rho}{\rho}\,\Re(\eps_{\mathrm{TiO}_{2}}(\lambda_\text{ENZ}))
   \approx -\frac{0.621}{0.379}\times 5.7 \approx -9.3.
   \label{eq:ch3_ENZ_condition}
 \end{equation}
-From the Johnson and Christy data, Ni reaches $\Re(\eps_\text{Ni}) \approx -9.3$
-near $\lambda \approx 430$\,nm. However, when we include the TiO$_2$ wavelength
-dependence more carefully, the crossing occurs near $607$\,nm. The reason for
-this discrepancy is that equation~\eqref{eq:ch3_ENZ_condition} is wavelength
-dependent on both sides, and the crossing must be found self-consistently.
+From the Johnson and Christy data, Ni reaches
+$\Re(\eps_{\mathrm{Ni}}) \approx -9.3$ near $\lambda \approx 430$\,nm.
+However, when we include the TiO$_2$ wavelength dependence more carefully, the
+crossing occurs near $607$\,nm. The reason for this discrepancy is that
+equation~\eqref{eq:ch3_ENZ_condition} is wavelength dependent on both sides,
+and the crossing must be found self-consistently.
 
 In the lossless picture (imaginary parts set to zero), the wavelength range
 where $\Re(\epar) < 0$ and $\Re(\eperp) > 0$ constitutes the \textbf{hyperbolic
@@ -645,15 +641,16 @@ and $\eperp(\lambda)$ from the actual fabricated sample.
 \begin{resultbox}
 \textbf{Summary of Chapter~\ref{ch:emt}.} Starting from the electromagnetic
 boundary conditions at planar interfaces, we derived that the in-plane
-permittivity $\epar = \rho\eps_\text{Ni} + (1-\rho)\eps_\text{TiO_2}$ is the
-arithmetic mean (capacitors in parallel) and the out-of-plane permittivity
-$\eperp = \eps_\text{Ni}\eps_\text{TiO_2}/(\rho\eps_\text{TiO_2} +
-(1-\rho)\eps_\text{Ni})$ is the harmonic mean (capacitors in series). With
-$\rho = 0.379$, the EMT predicts an ENZ crossing in $\epar$ at $607$\,nm and
-a loss tangent of $2$ to $8$ throughout the visible range. The out-of-plane
-permittivity $\eperp$ is dielectric throughout, driven by TiO$_2$. However,
-thin-film effects, surface oxidation, and PVD islanding make the fabricated
-Ni less metallic than bulk, and the experimental extraction in
-Chapter~\ref{ch:results} shows both $\Re(\epar)$ and $\Re(\eperp)$ positive
-throughout $550$--$1000$\,nm.
+permittivity $\epar = \rho\eps_{\mathrm{Ni}} + (1-\rho)\eps_{\mathrm{TiO}_{2}}$
+is the arithmetic mean (capacitors in parallel) and the out-of-plane
+permittivity
+$\eperp = \eps_{\mathrm{Ni}}\eps_{\mathrm{TiO}_{2}} /
+(\rho\eps_{\mathrm{TiO}_{2}} + (1-\rho)\eps_{\mathrm{Ni}})$
+is the harmonic mean (capacitors in series). With $\rho = 0.379$, the EMT
+predicts an ENZ crossing in $\epar$ at $607$\,nm and a loss tangent of $2$
+to $8$ throughout the visible range. The out-of-plane permittivity $\eperp$
+is dielectric throughout, driven by TiO$_2$. However, thin-film effects,
+surface oxidation, and PVD islanding make the fabricated Ni less metallic
+than bulk, and the experimental extraction in Chapter~\ref{ch:results} shows
+both $\Re(\epar)$ and $\Re(\eperp)$ positive throughout $550$--$1000$\,nm.
 \end{resultbox}
