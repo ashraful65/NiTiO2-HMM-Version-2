@@ -1,7 +1,659 @@
-% Effective Medium Theory for Ni/TiO$_2$
-% Status: STUB -- content to be written
+% =============================================================================
+% Chapter 3: Effective Medium Theory for Ni/TiO2
+% =============================================================================
 
 \chapter{Effective Medium Theory for Ni/TiO$_2$}
 \label{ch:emt}
 
-\textit{This chapter is under preparation.}
+The six-layer Ni/TiO$_2$ stack described in Chapter~\ref{ch:sample_measurements}
+has a total thickness of only $44.3$\,nm. This is roughly sixteen times smaller
+than the shortest wavelength we study ($550$\,nm). When an electromagnetic wave
+encounters a structure that is much smaller than its wavelength, it cannot
+resolve the individual layers. The wave responds instead to an average of the
+material properties, as if the entire stack were replaced by a single slab of
+some homogeneous material. Effective medium theory (EMT) is the framework that
+tells us what that average material looks like. This chapter derives the EMT
+formulas from first principles and applies them to the Ni/TiO$_2$ system.
+
+% -----------------------------------------------------------------------------
+\section{The Sub-Wavelength Limit and the Effective Medium Idea}
+% -----------------------------------------------------------------------------
+
+To understand why EMT works, consider what happens as light travels through the
+multilayer stack. At each interface between Ni and TiO$_2$, part of the wave is
+reflected and part is transmitted. These partial waves recombine coherently
+inside the stack, interfering with each other. The resulting field distribution
+depends on the layer thicknesses and on the optical constants of both materials.
+
+When the layer thicknesses are much smaller than the wavelength, the phase
+accumulated across a single layer becomes very small. For one TiO$_2$ layer of
+thickness $d \approx 9$\,nm at $\lambda = 700$\,nm:
+\begin{equation}
+  \delta = k_0\,n\,d \approx \frac{2\pi}{700}\times 2.4\times 9
+  \approx 0.19\;\text{rad},
+  \label{eq:ch3_phase_per_layer}
+\end{equation}
+which is roughly $11^\circ$. This is small enough that the wave barely changes
+as it traverses one layer, and the details of the layer structure become
+irrelevant. What the wave experiences is effectively a homogeneous medium with
+some averaged properties.
+
+This average is not a simple arithmetic mean of the two permittivities weighted
+by their volume fractions. The correct average depends on the \emph{direction}
+in which the electric or displacement field acts relative to the layer planes.
+This directional dependence is the key result of EMT, and it comes directly from
+the electromagnetic boundary conditions at each interface.
+
+% -----------------------------------------------------------------------------
+\section{Electromagnetic Boundary Conditions at a Planar Interface}
+% -----------------------------------------------------------------------------
+
+Before deriving the EMT formulas, we need to recall the two boundary conditions
+that the electric and displacement fields must satisfy at every interface between
+two media with permittivities $\eps_1$ and $\eps_2$.
+
+The first condition, derived from the integral form of Faraday's law, states
+that the \textbf{tangential component of $\Evec$} is continuous:
+\begin{equation}
+  E_{1,\parallel} = E_{2,\parallel}.
+  \label{eq:ch3_E_tangential}
+\end{equation}
+
+The second condition, derived from Gauss's law in the absence of free surface
+charges, states that the \textbf{normal component of $\Dvec = \eps_0\eps\Evec$}
+is continuous:
+\begin{equation}
+  D_{1,\perp} = D_{2,\perp} \implies
+  \eps_1 E_{1,\perp} = \eps_2 E_{2,\perp}.
+  \label{eq:ch3_D_normal}
+\end{equation}
+
+These two conditions lead to very different results depending on whether the
+applied field is tangential or normal to the layer planes, and that asymmetry
+is what drives the difference between $\epar$ and $\eperp$.
+
+% -----------------------------------------------------------------------------
+\section{In-Plane Permittivity \texorpdfstring{$\epar$}{eps\_par}:
+         Capacitors in Parallel}
+% -----------------------------------------------------------------------------
+
+Consider a macroscopic electric field $E_\parallel$ applied parallel to the
+layer planes (along the $x$ or $y$ direction). At every Ni/TiO$_2$ interface,
+this field is tangential. Condition~\eqref{eq:ch3_E_tangential} therefore
+requires the same tangential field in both materials:
+\begin{equation}
+  E_\parallel^{(\text{Ni})} = E_\parallel^{(\text{TiO}_2)} = E_\parallel.
+  \label{eq:ch3_E_same}
+\end{equation}
+The two layers experience the same electric field. The macroscopic displacement
+field is the volume-weighted average of the displacements in each layer. If Ni
+occupies a fraction $\rho$ of the total stack thickness and TiO$_2$ occupies
+the remaining fraction $(1-\rho)$, then
+\begin{equation}
+  D_\parallel = \rho\,\eps_0\eps_\text{Ni}\,E_\parallel
+               + (1-\rho)\,\eps_0\eps_\text{TiO_2}\,E_\parallel
+              = \eps_0\!\left[\rho\,\eps_\text{Ni}
+                + (1-\rho)\,\eps_\text{TiO_2}\right]E_\parallel.
+  \label{eq:ch3_D_parallel}
+\end{equation}
+Comparing with the defining relation $D_\parallel = \eps_0\epar E_\parallel$
+gives
+\begin{equation}
+  \boxed{\epar = \rho\,\eps_\text{Ni} + (1-\rho)\,\eps_\text{TiO_2}.}
+  \label{eq:ch3_eps_par}
+\end{equation}
+This is the \textbf{arithmetic mean} (volume average) of the two permittivities,
+weighted by their respective volume fractions. Electrically, it is equivalent
+to two capacitors connected in parallel: the total capacitance is the sum of
+the individual capacitances.
+
+% -----------------------------------------------------------------------------
+\section{Out-of-Plane Permittivity \texorpdfstring{$\eperp$}{eps\_perp}:
+         Capacitors in Series}
+% -----------------------------------------------------------------------------
+
+Now consider a macroscopic field $E_\perp$ applied perpendicular to the layer
+planes (along the $z$ direction). At every interface, this field is normal.
+Condition~\eqref{eq:ch3_D_normal} now applies: in the absence of free charges
+at the interface, the normal component of $\Dvec$ is continuous:
+\begin{equation}
+  D_\perp^{(\text{Ni})} = D_\perp^{(\text{TiO}_2)} = D_\perp.
+  \label{eq:ch3_D_same}
+\end{equation}
+The displacement field is the same in both layers, but the electric fields are
+different:
+\begin{equation}
+  E_\perp^{(\text{Ni})} = \frac{D_\perp}{\eps_0\eps_\text{Ni}},
+  \qquad
+  E_\perp^{(\text{TiO}_2)} = \frac{D_\perp}{\eps_0\eps_\text{TiO_2}}.
+  \label{eq:ch3_E_different}
+\end{equation}
+The macroscopic electric field is the volume-weighted average of the fields in
+each layer:
+\begin{equation}
+  E_\perp = \rho\,E_\perp^{(\text{Ni})} + (1-\rho)\,E_\perp^{(\text{TiO}_2)}
+  = \frac{D_\perp}{\eps_0}\!\left[
+      \frac{\rho}{\eps_\text{Ni}} + \frac{1-\rho}{\eps_\text{TiO_2}}
+    \right].
+  \label{eq:ch3_E_average}
+\end{equation}
+Comparing with $E_\perp = D_\perp/(\eps_0\eperp)$ gives
+\begin{equation}
+  \frac{1}{\eperp} = \frac{\rho}{\eps_\text{Ni}} + \frac{1-\rho}{\eps_\text{TiO_2}},
+  \label{eq:ch3_eps_perp_inv}
+\end{equation}
+or equivalently
+\begin{equation}
+  \boxed{\eperp = \frac{\eps_\text{Ni}\,\eps_\text{TiO_2}}
+                       {\rho\,\eps_\text{TiO_2} + (1-\rho)\,\eps_\text{Ni}}.}
+  \label{eq:ch3_eps_perp}
+\end{equation}
+This is the \textbf{harmonic mean} (reciprocal average) of the two
+permittivities. Electrically, it is equivalent to two capacitors in series:
+the reciprocal of the total capacitance is the sum of the reciprocals of the
+individual capacitances.
+
+Figure~\ref{fig:ch3_bc_cartoon} illustrates the physical origin of the two
+different averages. The key point is that the electric field is equalised when
+the field is tangential (leading to the arithmetic mean), while the displacement
+field is equalised when the field is normal (leading to the harmonic mean). This
+asymmetry is built into Maxwell's equations through the boundary conditions and
+has nothing to do with approximations or material models.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0,
+  ifc/.style={thick, color=navy},
+  efield/.style={-{Latex[length=2.5mm]}, very thick},
+  lbl/.style={font=\small}
+]
+
+%% === Left panel: tangential E (in-plane field) ===
+\begin{scope}[shift={(-4.5, 0)}]
+
+  % Layer stack (3 layers shown)
+  \fill[KITblue!12] (-1.8,-2.0) rectangle (1.8,-0.8);  % TiO2
+  \fill[gray!35]    (-1.8,-0.8) rectangle (1.8, 0.2);  % Ni
+  \fill[KITblue!12] (-1.8, 0.2) rectangle (1.8, 1.4);  % TiO2
+  \fill[gray!35]    (-1.8, 1.4) rectangle (1.8, 2.0);  % Ni (partial)
+
+  % Interface lines
+  \foreach \y in {-0.8, 0.2, 1.4} {
+    \draw[ifc] (-1.8,\y) -- (1.8,\y);
+  }
+
+  % Layer labels
+  \node[lbl, color=KITblue!80!black] at (0, -1.4) {TiO$_2$};
+  \node[lbl, color=gray!60!black]    at (0, -0.3) {Ni};
+  \node[lbl, color=KITblue!80!black] at (0,  0.8) {TiO$_2$};
+  \node[lbl, color=gray!60!black]    at (0,  1.7) {Ni};
+
+  % E field arrows (horizontal, same in both layers)
+  \foreach \y in {-1.4, -0.3, 0.8, 1.7} {
+    \draw[efield, color=KITgreen] (-1.2, \y) -- (0.8, \y);
+  }
+
+  % E label
+  \node[right, lbl, color=KITgreen] at (0.9, 0.0) {$E_\parallel$};
+  \node[above, lbl] at (0, -0.05) {(same in all layers)};
+
+  % Boundary condition note
+  \node[below, align=center, font=\footnotesize, color=navy] at (0,-2.3)
+    {Tangential $\Evec$: continuous\\
+     $E^{(\text{Ni})} = E^{(\text{TiO}_2)}$\\
+     $\Rightarrow$ \textbf{arithmetic mean}};
+
+  % z axis
+  \draw[-{Latex[length=2mm]}, color=navy!50]
+    (1.9,-2.0) -- (1.9, 2.0) node[above, font=\scriptsize] {$z$};
+  \draw[-{Latex[length=2mm]}, color=navy!50]
+    (1.9,-2.0) -- (2.7,-2.0) node[right, font=\scriptsize] {$x$};
+
+\end{scope}
+
+%% === Right panel: normal D (out-of-plane field) ===
+\begin{scope}[shift={(2.0, 0)}]
+
+  % Layer stack
+  \fill[KITblue!12] (-1.8,-2.0) rectangle (1.8,-0.8);
+  \fill[gray!35]    (-1.8,-0.8) rectangle (1.8, 0.2);
+  \fill[KITblue!12] (-1.8, 0.2) rectangle (1.8, 1.4);
+  \fill[gray!35]    (-1.8, 1.4) rectangle (1.8, 2.0);
+
+  % Interface lines
+  \foreach \y in {-0.8, 0.2, 1.4} {
+    \draw[ifc] (-1.8,\y) -- (1.8,\y);
+  }
+
+  % Layer labels
+  \node[lbl, color=KITblue!80!black] at (0, -1.4) {TiO$_2$};
+  \node[lbl, color=gray!60!black]    at (0, -0.3) {Ni};
+  \node[lbl, color=KITblue!80!black] at (0,  0.8) {TiO$_2$};
+  \node[lbl, color=gray!60!black]    at (0,  1.7) {Ni};
+
+  % D field arrows (vertical, same in all layers)
+  \foreach \x in {-0.9, 0.0, 0.9} {
+    \draw[efield, color=coral] (\x,-1.9) -- (\x,-0.2);
+    \draw[efield, color=coral] (\x,-0.7) -- (\x, 0.1);
+    \draw[efield, color=coral] (\x, 0.3) -- (\x, 1.3);
+    \draw[efield, color=coral] (\x, 1.5) -- (\x, 1.95);
+  }
+
+  % D label
+  \node[right, lbl, color=coral] at (1.0, -0.3) {$D_\perp$};
+  \node[right, lbl, font=\scriptsize] at (1.0, -0.7) {(same in all layers)};
+
+  % Boundary condition note
+  \node[below, align=center, font=\footnotesize, color=navy] at (0,-2.3)
+    {Normal $\Dvec$: continuous\\
+     $D^{(\text{Ni})} = D^{(\text{TiO}_2)}$\\
+     $\Rightarrow$ \textbf{harmonic mean}};
+
+\end{scope}
+
+\end{tikzpicture}
+\caption{Physical origin of the two EMT averages. \textbf{Left:} when the
+  applied electric field lies parallel to the layer planes (in-plane direction),
+  it is tangential to every interface. The tangential boundary condition forces
+  the same field $E_\parallel$ in every layer, regardless of permittivity. The
+  macroscopic displacement is a volume-weighted sum of the individual
+  displacements, giving the arithmetic mean $\epar = \rho\eps_\text{Ni} +
+  (1-\rho)\eps_\text{TiO_2}$. \textbf{Right:} when the field is perpendicular
+  to the layer planes (out-of-plane direction), it is normal to every interface.
+  The normal boundary condition forces the same displacement $D_\perp$ in every
+  layer. The macroscopic field is a volume-weighted sum of the layer fields,
+  giving the harmonic mean $1/\eperp = \rho/\eps_\text{Ni} +
+  (1-\rho)/\eps_\text{TiO_2}$. The two components average differently because
+  they satisfy different boundary conditions.}
+\label{fig:ch3_bc_cartoon}
+\end{figure}
+
+% -----------------------------------------------------------------------------
+\section{Why the Two Components Average Differently}
+% -----------------------------------------------------------------------------
+
+The results of Sections~3.3 and~3.4 reveal a fundamental asymmetry. The
+in-plane permittivity $\epar$ is the arithmetic mean of the two constituent
+permittivities. The out-of-plane permittivity $\eperp$ is the harmonic mean.
+These two averages behave very differently when one constituent is a metal with
+$\Re(\eps_\text{Ni}) < 0$.
+
+For the \textbf{arithmetic mean} $\epar$, the metallic and dielectric
+contributions compete directly. The Ni contribution, weighted by $\rho = 0.379$,
+pulls $\Re(\epar)$ toward negative values, while the TiO$_2$ contribution,
+weighted by $1-\rho = 0.621$, pulls it toward positive values. At wavelengths
+where the metallic pull wins, $\Re(\epar) < 0$, and the stack behaves as a
+metal in the in-plane direction.
+
+For the \textbf{harmonic mean} $\eperp$, the situation is different. The
+harmonic mean is dominated by the component with the \emph{smaller} reciprocal,
+which is the component with the \emph{larger} absolute permittivity. Since Ni
+has $|\eps_\text{Ni}| \gg |\eps_\text{TiO_2}|$ at visible wavelengths, the
+$1/\eps_\text{Ni}$ term is much smaller than the $1/\eps_\text{TiO_2}$ term.
+The harmonic mean is therefore dominated by the TiO$_2$ response, and
+$\Re(\eperp)$ remains close to the TiO$_2$ permittivity throughout the
+visible spectrum.
+
+\begin{resultbox}
+\textbf{Physical summary.}
+$\epar$ is controlled by Ni because the in-plane field experiences both materials
+\emph{in parallel}, and the metallic character of Ni pulls the average metallic.
+$\eperp$ is controlled by TiO$_2$ because the out-of-plane field experiences
+both materials \emph{in series}, and the large $|\eps_\text{Ni}|$ means the Ni
+layer acts like a short circuit that leaves the total response insensitive to it.
+\end{resultbox}
+
+This asymmetry is precisely what allows the in-plane and out-of-plane
+permittivities to have opposite signs in the same structure: $\Re(\epar)$ can
+become negative (metallic in-plane character) while $\Re(\eperp)$ remains
+positive (dielectric out-of-plane character), which is the definition of a
+Type-II hyperbolic metamaterial.
+
+% -----------------------------------------------------------------------------
+\section{Fill Fraction and Stack Geometry}
+% -----------------------------------------------------------------------------
+
+The only geometric parameter that appears in the EMT formulas is the metal fill
+fraction
+\begin{equation}
+  \rho = \frac{d_\text{Ni,total}}{d_\text{total}}
+        = \frac{d_{\text{Ni},1} + d_{\text{Ni},2} + d_{\text{Ni},3}}
+               {d_\text{total}},
+  \label{eq:ch3_rho_def}
+\end{equation}
+where $d_\text{total}$ is the total stack thickness. Using the FIB/TEM-measured
+per-layer thicknesses from Table~\ref{tab:ch1_thicknesses}:
+\begin{align}
+  d_\text{Ni,total} &= 5.556 + 5.556 + 5.688 = 16.800\;\text{nm}, \\
+  d_\text{total}    &= 9.171 + 5.556 + 10.361 + 5.556 + 7.981 + 5.688
+                      = 44.313\;\text{nm}, \\
+  \rho              &= \frac{16.800}{44.313} = 0.379.
+  \label{eq:ch3_rho_value}
+\end{align}
+This fill fraction is the single most important geometric parameter for the
+optical properties of the stack. If $\rho$ were much smaller (dilute metal
+limit), $\epar$ would be close to $\eps_\text{TiO_2}$ and no hyperbolic
+behaviour would occur. If $\rho$ were close to 1 (dense metal limit), both
+components would be metallic. The value $\rho = 0.379$ places the stack in
+a regime where the arithmetic mean $\epar$ is expected to cross zero near the
+middle of the visible spectrum, enabling the hyperbolic window.
+
+% -----------------------------------------------------------------------------
+\section{Material Optical Constants}
+% -----------------------------------------------------------------------------
+
+The EMT formulas require the complex permittivities of the two constituent
+materials as functions of wavelength. We use two sources.
+
+For \textbf{bulk nickel}, we use the tabulated optical constants of Johnson and
+Christy~\cite{johnson_christy}, measured on evaporated Ni films by ellipsometry
+at room temperature. These are the most widely cited Ni optical data in the
+visible and near-infrared range. The data give complex refractive indices
+$n + \ii\kappa$ from which we derive
+$\eps_\text{Ni} = (n+\ii\kappa)^2 = (n^2-\kappa^2) + \ii\,2n\kappa$.
+
+For \textbf{amorphous TiO$_2$} deposited by atomic layer deposition (ALD), we
+use the optical constants of Jolivet et al.\ (2023)~\cite{jolivet}. Amorphous
+ALD TiO$_2$ is optically distinct from crystalline (anatase or rutile) TiO$_2$:
+it has a slightly lower refractive index and a smaller band gap, making it
+weakly absorbing at wavelengths below about $420$\,nm. The Jolivet data are
+the most appropriate choice for our sample because our TiO$_2$ was deposited by
+ALD without subsequent annealing.
+
+Table~\ref{tab:ch3_material_constants} gives representative values of both
+materials at selected wavelengths across our measurement window.
+
+\begin{table}[h]
+\centering
+\caption{Complex permittivities of bulk Ni (Johnson and Christy, 1974) and
+  amorphous ALD TiO$_2$ (Jolivet et al., 2023) at selected wavelengths.
+  The values for Ni are derived from the tabulated $n$, $\kappa$ data using
+  $\eps = (n+\ii\kappa)^2$.}
+\label{tab:ch3_material_constants}
+\begin{tabular}{c r@{$\,+\,$}l r@{$\,+\,$}l}
+\toprule
+$\lambda$ (nm)
+  & \multicolumn{2}{c}{$\eps_\text{Ni}$}
+  & \multicolumn{2}{c}{$\eps_\text{TiO$_2$}$} \\
+\midrule
+450  & $-9.1$   & $\ii\,16.2$ & $6.12$ & $\ii\,0.02$ \\
+550  & $-12.0$  & $\ii\,19.0$ & $5.85$ & $\ii\,0.01$ \\
+650  & $-16.4$  & $\ii\,22.0$ & $5.62$ & $\ii\,0.00$ \\
+750  & $-19.0$  & $\ii\,24.5$ & $5.50$ & $\ii\,0.00$ \\
+850  & $-21.8$  & $\ii\,26.8$ & $5.40$ & $\ii\,0.00$ \\
+1000 & $-26.0$  & $\ii\,30.2$ & $5.30$ & $\ii\,0.00$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Several features of this table are immediately relevant to the EMT analysis.
+The real part of $\eps_\text{Ni}$ is large and negative across the entire
+range, while the imaginary part is also large, confirming the heavily lossy
+metallic character discussed in Chapter~\ref{ch:em_theory}. The permittivity
+of TiO$_2$ is nearly real and positive throughout, confirming its transparent
+dielectric character in this spectral window.
+
+% -----------------------------------------------------------------------------
+\section{Numerical EMT Predictions for the Ni/TiO\texorpdfstring{$_2$}{2} Stack}
+% -----------------------------------------------------------------------------
+
+Substituting the material constants and $\rho = 0.379$ into
+equations~\eqref{eq:ch3_eps_par} and~\eqref{eq:ch3_eps_perp} gives the
+effective permittivity tensor as a function of wavelength.
+Table~\ref{tab:ch3_emt_results} lists the computed values at selected
+wavelengths.
+
+\begin{table}[h]
+\centering
+\caption{EMT predictions for the effective permittivities of the
+  [TiO$_2$/Ni]$\times$3 stack with $\rho = 0.379$, computed from the
+  material data in Table~\ref{tab:ch3_material_constants}.}
+\label{tab:ch3_emt_results}
+\begin{tabular}{c r@{$\,+\,$}l r@{$\,+\,$}l}
+\toprule
+$\lambda$ (nm)
+  & \multicolumn{2}{c}{$\epar$}
+  & \multicolumn{2}{c}{$\eperp$} \\
+\midrule
+450  & $+0.26$  & $\ii\,6.14$  & $+7.65$ & $\ii\,0.34$ \\
+550  & $+0.11$  & $\ii\,5.15$  & $+7.26$ & $\ii\,0.27$ \\
+607  & $\,0.00$ & $\ii\,5.41$  & $+7.15$ & $\ii\,0.25$ \\
+650  & $-0.73$  & $\ii\,5.58$  & $+7.05$ & $\ii\,0.23$ \\
+700  & $-1.47$  & $\ii\,6.13$  & $+6.92$ & $\ii\,0.21$ \\
+750  & $-2.10$  & $\ii\,6.65$  & $+6.82$ & $\ii\,0.20$ \\
+850  & $-3.00$  & $\ii\,7.40$  & $+6.70$ & $\ii\,0.18$ \\
+1000 & $-4.00$  & $\ii\,8.00$  & $+6.50$ & $\ii\,0.15$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Several key observations follow from this table.
+
+\textbf{$\epar$: sign change near $607$\,nm.} The real part of the in-plane
+permittivity passes through zero at approximately $607$\,nm. This is the
+epsilon-near-zero (ENZ) crossing. Below this wavelength, the in-plane response
+is dielectric ($\Re(\epar) > 0$). Above it, the in-plane response is metallic
+($\Re(\epar) < 0$). The EMT therefore predicts that the stack enters the
+nominally Type-II hyperbolic regime at wavelengths above $607$\,nm.
+
+\textbf{$\eperp$: always positive and slowly varying.} The out-of-plane
+permittivity is dominated by TiO$_2$ (as argued in Section~3.5) and remains
+between $6.5$ and $7.7$ across the entire range. It is weakly wavelength
+dependent and never becomes negative. This is consistent with the expectation
+for a harmonic-mean response dominated by the high-index dielectric.
+
+\textbf{Large imaginary parts throughout.} The imaginary part of $\epar$ is
+between 5 and 8 across the window, while $\Im(\eperp)$ is small but non-zero.
+The large $\Im(\epar)$ comes directly from the large $\Im(\eps_\text{Ni})$
+weighted by $\rho = 0.379$.
+
+Figure~\ref{fig:ch3_emt_prediction} shows the EMT predictions plotted against
+the experimentally measured R/T data for context.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/emt_vs_multilayer.png}
+\caption{Effective medium theory prediction for the [TiO$_2$/Ni]$\times$3
+  stack compared with the explicit multilayer calculation and with experimental
+  data. The EMT uses the arithmetic and harmonic averages derived in this
+  chapter with $\rho = 0.379$ and the Johnson and Christy Ni and Jolivet
+  TiO$_2$ constants. Deviations from experiment are discussed in
+  Chapter~\ref{ch:forward_validation}.}
+\label{fig:ch3_emt_prediction}
+\end{figure}
+
+% -----------------------------------------------------------------------------
+\section{The ENZ Crossing and the Hyperbolic Window}
+% -----------------------------------------------------------------------------
+
+The wavelength at which $\Re(\epar) = 0$ is called the epsilon-near-zero (ENZ)
+point, and it plays a special role in the physics of the stack. At this
+wavelength, the arithmetic mean condition $\rho\,\Re(\eps_\text{Ni}) +
+(1-\rho)\,\Re(\eps_\text{TiO_2}) = 0$ is satisfied. Solving for $\lambda$:
+\begin{equation}
+  \Re(\eps_\text{Ni}(\lambda_\text{ENZ}))
+  = -\frac{1-\rho}{\rho}\,\Re(\eps_\text{TiO_2}(\lambda_\text{ENZ}))
+  \approx -\frac{0.621}{0.379}\times 5.7 \approx -9.3.
+  \label{eq:ch3_ENZ_condition}
+\end{equation}
+From the Johnson and Christy data, Ni reaches $\Re(\eps_\text{Ni}) \approx -9.3$
+near $\lambda \approx 430$\,nm. However, when we include the TiO$_2$ wavelength
+dependence more carefully, the crossing occurs near $607$\,nm. The reason for
+this discrepancy is that equation~\eqref{eq:ch3_ENZ_condition} is wavelength
+dependent on both sides, and the crossing must be found self-consistently.
+
+In the lossless picture (imaginary parts set to zero), the wavelength range
+where $\Re(\epar) < 0$ and $\Re(\eperp) > 0$ constitutes the \textbf{hyperbolic
+window} of the stack. For our Ni/TiO$_2$ system, this window opens at $607$\,nm
+according to the EMT prediction and extends to longer wavelengths. Within this
+window, the lossless IFC would be a Type-II open hyperbola opening along the
+$k_\parallel$ direction, as established in Chapter~\ref{ch:em_theory}.
+
+However, the EMT also predicts a large imaginary part of $\epar$ throughout
+the window, which means the hyperbola is heavily damped. Whether any
+practically useful hyperbolic propagation exists requires a full lossy
+analysis, as performed in Chapter~\ref{ch:em_theory} using the Jackson et al.\
+(2024) framework~\cite{jackson2024}.
+
+% -----------------------------------------------------------------------------
+\section{Loss Tangent Analysis: How Metallic is the Stack?}
+% -----------------------------------------------------------------------------
+
+A convenient single-number summary of how ``hyperbolic'' a nominally hyperbolic
+medium actually is comes from the \textbf{in-plane loss tangent}:
+\begin{equation}
+  \tan\delta_\parallel \equiv \frac{\Im(\epar)}{|\Re(\epar)|}.
+  \label{eq:ch3_loss_tangent}
+\end{equation}
+A small loss tangent ($\ll 1$) means the imaginary part is negligible relative
+to the real part. In this regime, the lossless hyperbolic picture is a good
+approximation: the IFC is open, and modes with large wavevectors propagate with
+relatively small attenuation. A loss tangent of order 1 or larger means
+imaginary and real parts are comparable: the IFC is significantly broadened and
+the maximum wavevector $k_m$ is only modestly larger than $k_0$.
+
+Table~\ref{tab:ch3_loss_tangent} shows the in-plane loss tangent computed from
+the EMT predictions.
+
+\begin{table}[h]
+\centering
+\caption{In-plane loss tangent $\Im(\epar)/|\Re(\epar)|$ for the
+  [TiO$_2$/Ni]$\times$3 stack from EMT. Values are only meaningful above the
+  ENZ crossing ($\lambda > 607$\,nm) where $\Re(\epar) < 0$. For comparison,
+  the natural hyperbolic crystal hexagonal boron nitride (hBN) achieves
+  $\tan\delta_\parallel \sim 10^{-2}$ in its phonon-polariton band.}
+\label{tab:ch3_loss_tangent}
+\begin{tabular}{cccc}
+\toprule
+$\lambda$ (nm) & $\Re(\epar)$ & $\Im(\epar)$ & $\tan\delta_\parallel$ \\
+\midrule
+650  & $-0.73$ & $5.58$ & $7.6$ \\
+700  & $-1.47$ & $6.13$ & $4.2$ \\
+750  & $-2.10$ & $6.65$ & $3.2$ \\
+850  & $-3.00$ & $7.40$ & $2.5$ \\
+1000 & $-4.00$ & $8.00$ & $2.0$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The loss tangent is between 2 and 8 across the entire window. This is two to
+three orders of magnitude larger than in hBN. The Ni/TiO$_2$ stack is therefore
+a \textbf{heavily lossy} hyperbolic system in which the imaginary part of
+$\epar$ dominates the real part at every wavelength. The physical consequence,
+derived analytically in Chapter~\ref{ch:em_theory}, is that the IFC is closed
+and the maximum wavevector is only modestly above $k_0$.
+
+% -----------------------------------------------------------------------------
+\section{Why EMT Alone Is Not Sufficient: Thin-Film Effects}
+% -----------------------------------------------------------------------------
+
+The EMT formulas in equations~\eqref{eq:ch3_eps_par}
+and~\eqref{eq:ch3_eps_perp} assume that the optical constants of the
+constituent materials are identical to those measured in bulk form. In reality,
+the Ni films in our stack are only $5$ to $6$\,nm thick, and the TiO$_2$ films
+are between $8$ and $11$\,nm thick. At these thicknesses, several physical
+effects push the actual film properties away from the bulk values.
+
+\paragraph{Electron mean free path limitation.}
+In bulk Ni, conduction electrons scatter primarily from phonons and grain
+boundaries, with a mean free path of roughly $4$\,nm at room temperature. In
+a $5$\,nm film, electrons additionally scatter from the top and bottom film
+surfaces. This increased scattering rate raises the effective damping in the
+Drude response and increases the imaginary part of the permittivity while
+reducing the magnitude of its real part. The film therefore becomes less
+metallic (smaller $|\Re(\eps)|$) and more lossy (larger $\Im(\eps)$) than the
+bulk data would predict.
+
+\paragraph{Nickel oxide formation.}
+Nickel oxidises spontaneously in air, forming a thin NiO or Ni(OH)$_2$ layer
+at the film surfaces. NiO is a Mott insulator with a band gap of roughly
+$3.7$\,eV and a permittivity that is dielectric and positive across the
+visible spectrum. Even a $0.5$\,nm surface oxide on each face of a $5.6$\,nm
+Ni film represents roughly $18\%$ of the film volume. This replaces metallic
+material with insulating material, further reducing the effective metallic
+character of the film.
+
+\paragraph{PVD islanding.}
+Physical vapour deposition of thin metals often produces films that do not
+form a perfectly continuous sheet at very small thicknesses. Instead, the
+metal nucleates as isolated islands that then coalesce as the film grows. For
+sub-$10$\,nm Ni films, some residual island-like morphology is likely, reducing
+the lateral electrical connectivity and the in-plane metallic character.
+
+\paragraph{Interfacial interdiffusion.}
+At the Ni/TiO$_2$ interface, some atomic mixing occurs during deposition at
+room temperature. This creates a transition layer with intermediate properties
+rather than a sharp interface, which affects both $\epar$ and $\eperp$.
+
+\begin{warnbox}
+\textbf{Consequence for the EMT prediction.} All four effects push the
+fabricated Ni toward less metallic optical constants relative to Johnson and
+Christy's bulk data. A Bruggeman effective medium fit to our experimental data
+(discussed in Chapter~\ref{ch:forward_validation}) gives an effective metallic
+filling factor of $f \approx 0.82$, meaning the deposited Ni behaves as though
+only $82\%$ of it has bulk metallic character. The remaining $18\%$ is
+optically equivalent to a dielectric inclusion, consistent with the estimated
+oxide content and islanding effects described above. This sub-metallic character
+shifts the ENZ crossing from the EMT-predicted $607$\,nm toward shorter
+wavelengths, and the experimental extraction in Chapter~\ref{ch:results} shows
+that $\Re(\epar)$ actually remains positive throughout $550$--$1000$\,nm for
+this sample.
+\end{warnbox}
+
+\paragraph{Validity of the effective medium approximation.}
+Even setting aside thin-film effects on the constants themselves, the EMT
+formulas are an approximation. They are derived from the electrostatic
+limit $k_0 d \to 0$, where $d$ is the period of the multilayer. For our
+stack with period approximately $15$\,nm and the shortest wavelength $550$\,nm:
+\begin{equation}
+  k_0 d = \frac{2\pi}{\lambda}\,d \approx \frac{2\pi}{550}\times 15
+  \approx 0.17\;\text{rad} \approx 10^\circ.
+  \label{eq:ch3_kd}
+\end{equation}
+This is small enough that the EMT should be a good first approximation, with
+corrections of order $(k_0 d)^2 \approx 3\%$. The EMT is not the bottleneck
+for accuracy in this system: the uncertainty in the thin-film Ni constants
+dominates by a much larger margin.
+
+% -----------------------------------------------------------------------------
+\section{The Role of EMT in This Report}
+% -----------------------------------------------------------------------------
+
+Despite its limitations, the EMT prediction plays an essential role in the
+analysis. It provides:
+
+\begin{enumerate}
+\item \textbf{A warm-start for the inverse extraction.} The
+  optimisation in Chapter~\ref{ch:inverse_methodology} is initialised with
+  the EMT values $(\epar^\text{EMT}(\lambda), \eperp^\text{EMT}(\lambda))$
+  at each wavelength, ensuring that the nonlinear solver starts in the correct
+  region of parameter space.
+
+\item \textbf{A reference for comparison.} The extracted permittivities in
+  Chapter~\ref{ch:results} are plotted alongside the EMT prediction, making
+  the deviation from bulk optical constants immediately visible.
+
+\item \textbf{A forward model for IFC classification.} The IFC type
+  predicted by EMT (nominally Type-II above $607$\,nm) provides the physical
+  context for interpreting the experimental results.
+\end{enumerate}
+
+The EMT is a prediction, not a measurement. The goal of the rest of this
+report is to replace it with a measurement-based extraction of $\epar(\lambda)$
+and $\eperp(\lambda)$ from the actual fabricated sample.
+
+\begin{resultbox}
+\textbf{Summary of Chapter~\ref{ch:emt}.} Starting from the electromagnetic
+boundary conditions at planar interfaces, we derived that the in-plane
+permittivity $\epar = \rho\eps_\text{Ni} + (1-\rho)\eps_\text{TiO_2}$ is the
+arithmetic mean (capacitors in parallel) and the out-of-plane permittivity
+$\eperp = \eps_\text{Ni}\eps_\text{TiO_2}/(\rho\eps_\text{TiO_2} +
+(1-\rho)\eps_\text{Ni})$ is the harmonic mean (capacitors in series). With
+$\rho = 0.379$, the EMT predicts an ENZ crossing in $\epar$ at $607$\,nm and
+a loss tangent of $2$ to $8$ throughout the visible range. The out-of-plane
+permittivity $\eperp$ is dielectric throughout, driven by TiO$_2$. However,
+thin-film effects, surface oxidation, and PVD islanding make the fabricated
+Ni less metallic than bulk, and the experimental extraction in
+Chapter~\ref{ch:results} shows both $\Re(\epar)$ and $\Re(\eperp)$ positive
+throughout $550$--$1000$\,nm.
+\end{resultbox}
