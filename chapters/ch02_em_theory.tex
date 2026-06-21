@@ -496,8 +496,10 @@ $\Re(\epar)$ & $\Re(\eperp)$ & IFC shape & Physical character \\
 \midrule
 $+$ & $+$ & Closed ellipse   & Dielectric in both directions; bounded
                                 wavevectors \\
-$+$ & $-$ & Type-I hyperbola & Arms along $k_x$; metallic out-of-plane \\
-$-$ & $+$ & Type-II hyperbola & Arms along $k_z$; metallic in-plane \\
+$+$ & $-$ & Type-I hyperbola & Arms along $k_z$; open contour; metallic
+                                out-of-plane \\
+$-$ & $+$ & Type-II hyperbola & Arms along $k_\parallel$; open contour; metallic
+                                in-plane \\
 $-$ & $-$ & No propagating TM modes & Both components metallic \\
 \bottomrule
 \end{tabular}
@@ -506,10 +508,10 @@ $-$ & $-$ & No propagating TM modes & Both components metallic \\
 For the Ni/TiO$_2$ multilayer, the effective medium theory (Chapter~\ref{ch:emt})
 predicts $\Re(\epar) < 0$ at wavelengths above approximately $607$\,nm and
 $\Re(\eperp) > 0$ throughout, placing the stack nominally in the Type-II
-hyperbolic column. An ideal Type-II hyperboloid opens along the $k_z$ axis with
-asymptotes satisfying $k_z/k_x = \pm\sqrt{\eperp/|\epar|}$. The wavevector
-magnitude grows without bound as the propagation direction approaches the
-asymptote.
+hyperbolic column. An ideal Type-II hyperboloid opens along the $k_\parallel$
+axis with asymptotes satisfying $k_\parallel/k_z = \pm\sqrt{\eperp/|\epar|}$.
+The wavevector magnitude grows without bound as the propagation direction
+approaches the asymptote.
 
 In an ideal lossless hyperbolic medium, this unbounded wavevector is a genuine
 physical property. It implies that the medium can channel electromagnetic energy
@@ -697,24 +699,32 @@ Figure~\ref{fig:ch2_lossy_ifc} illustrates this transformation schematically.
 
 %% --- Left panel: lossless ---
 \begin{scope}[shift={(-3.8,0)}]
-  \draw[axis] (-0.5,0) -- (2.2,0) node[right, lbl] {$k_x/k_0$};
+  \draw[axis] (-2.2,0) -- (2.2,0) node[right, lbl] {$k_x/k_0$};
   \draw[axis] (0,-2.0) -- (0,2.0) node[above, lbl] {$k_z/k_0$};
 
-  % Type-II hyperbola (arms along kz); domain >= sqrt(0.18) ~ 0.424, use 0.44
+  % Type-II hyperbola (eps_par<0, eps_perp>0): opens along k_par (HORIZONTAL)
+  % k_par^2/(eps_perp*k0^2) - kz^2/(|eps_par|*k0^2) = 1
+  % Parametrize: x = k_par (domain var), kz = 0.58*sqrt(x^2-0.18)
+  % domain >= sqrt(0.18)~0.424; use 0.44
   \foreach \sgn in {1,-1}{
     \draw[lossless, domain=0.44:1.9, samples=80]
-      plot ({0.55*sqrt(\x*\x - 0.18)}, {\sgn*\x});
+      plot ({\x}, {\sgn*0.58*sqrt(\x*\x - 0.18)});
+  }
+  \foreach \sgn in {1,-1}{
+    \draw[lossless, domain=0.44:1.9, samples=80]
+      plot ({-\x}, {\sgn*0.58*sqrt(\x*\x - 0.18)});
   }
 
-  % Asymptote
-  \draw[gray!50, dashed] (0,-1.9) -- (1.05, 1.9);
-  \draw[gray!50, dashed] (0, 1.9) -- (1.05,-1.9);
-  \node[below, font=\footnotesize, color=coral] at (1.1,-2.1)
+  % Asymptotes for Type-II (opens along k_par): finite slope kz/k_par = +-|sqrt(eps_par/eps_perp)|
+  \draw[gray!50, dashed] (-1.9, -1.1) -- (1.9,  1.1);
+  \draw[gray!50, dashed] (-1.9,  1.1) -- (1.9, -1.1);
+  \node[below, font=\footnotesize, color=coral] at (0.8,-2.0)
     {Lossless (Type-II)};
-  \node[font=\scriptsize, color=gray] at (1.6,1.5) {asymptote};
+  \node[font=\scriptsize, color=gray] at (1.4, 1.4) {asymptote};
 
-  \draw[-{Latex[length=2mm]}, gray, thick] (0.5, 1.5) -- (0.7, 1.85);
-  \node[right, font=\scriptsize, color=gray] at (0.7, 1.7) {$k\to\infty$};
+  % Arrow indicating k -> infinity (horizontal direction)
+  \draw[-{Latex[length=2mm]}, gray, thick] (1.5, 0.3) -- (1.85, 0.3);
+  \node[right, font=\scriptsize, color=gray] at (1.85, 0.3) {$k\to\infty$};
 \end{scope}
 
 %% --- Right panel: lossy ---
@@ -758,8 +768,8 @@ Figure~\ref{fig:ch2_lossy_ifc} illustrates this transformation schematically.
 \caption{Schematic of how material loss transforms the isofrequency contour
   (IFC) of a Type-II hyperbolic medium.
   \textbf{Left:} the lossless case. The IFC is an open hyperbola whose arms
-  extend to arbitrarily large wavevectors along the $k_z$ axis. Grey dashed
-  lines show the asymptotes.
+  extend to arbitrarily large wavevectors along the $k_\parallel$ axis.
+  Grey dashed lines show the asymptotes.
   \textbf{Right:} with complex permittivities. The phase $\phi(\theta)$
   introduced by loss causes $\cos\phi$ to suppress $|\Re(\kvec)|$ as the
   wavenumber grows, closing the arms at a finite maximum wavevector $k_m$
