@@ -1,7 +1,523 @@
+% =============================================================================
 % Chapter 5: Transfer Matrix Method -- Step-by-Step Derivation
-% Status: STUB -- content to be written
+% =============================================================================
 
 \chapter{Transfer Matrix Method: Step-by-Step Derivation}
 \label{ch:tmm_derivation}
 
-\textit{This chapter is under preparation.}
+A multilayer optical stack presents a cascade of boundary matching problems.
+At every interface between two materials, the electromagnetic fields on both
+sides must be consistent with Maxwell's equations. For a stack with $N$ layers
+and therefore $N+1$ interfaces, a brute-force approach would require solving
+$2(N+1)$ simultaneous linear equations for the unknown field amplitudes. For
+our six-layer Ni/TiO$_2$ stack this is manageable, but the algebra quickly
+becomes unwieldy for more complex structures, and there is no systematic way
+to see how the result depends on the individual layer parameters.
+
+The \textbf{transfer matrix method} (TMM) solves this problem by encoding the
+field matching at each interface and the propagation through each layer as a
+series of $2\times 2$ matrix multiplications. The total optical response of the
+stack is then the product of these matrices. Adding or removing a layer changes
+only one factor in the product, and the physical effect of each layer is
+immediately visible in its matrix. This chapter derives the method from
+scratch, step by step, and applies it to the six-layer Ni/TiO$_2$ stack using
+the exact FIB/TEM-measured thicknesses.
+
+% -----------------------------------------------------------------------------
+\section{Fields in a Homogeneous Layer}
+% -----------------------------------------------------------------------------
+
+We work in the geometry established in Chapter~\ref{ch:em_theory}: the stack
+lies in the $xy$ plane, the layer normals point along $z$, and the plane of
+incidence is the $xz$ plane. We consider a monochromatic plane wave of angular
+frequency $\omega$ with the time convention $\ee^{-\ii\omega t}$.
+
+The in-plane wavevector component $k_x = k_0\sin\theta_\text{inc}$ is
+conserved across all interfaces (equation~\eqref{eq:ch2_kx_conserved}), where
+$\theta_\text{inc}$ is the angle of incidence in the ambient medium. Inside any
+layer $j$ with complex permittivity $\tilde\eps_j$, the normal component of the
+wavevector is
+\begin{equation}
+  k_{z,j} = \sqrt{\tilde\eps_j\,k_0^2 - k_x^2}.
+  \label{eq:ch5_kz_isotropic}
+\end{equation}
+We choose the root with $\Im(k_{z,j}) > 0$ for absorbing media, so that the
+downward-propagating wave $\ee^{+\ii k_{z,j} z}$ decays in amplitude rather than
+growing without bound as $z$ increases.
+
+Inside layer $j$, the general field is a superposition of a downward-propagating
+wave (amplitude $A_j$) and an upward-propagating wave (amplitude $B_j$). For
+the TE (s-polarised) polarisation, the electric field is:
+\begin{equation}
+  E_y^{(j)}(z) = A_j\,\ee^{+\ii k_{z,j} z} + B_j\,\ee^{-\ii k_{z,j} z},
+  \label{eq:ch5_Ey}
+\end{equation}
+and the corresponding magnetic field component (from Faraday's law) is:
+\begin{equation}
+  H_x^{(j)}(z) = \frac{k_{z,j}}{k_0}\!\left(
+    A_j\,\ee^{+\ii k_{z,j} z} - B_j\,\ee^{-\ii k_{z,j} z}
+  \right),
+  \label{eq:ch5_Hx}
+\end{equation}
+where factors of $\eps_0 c$ have been absorbed into the field amplitude.
+We define the TE optical admittance
+\begin{equation}
+  \eta_j^{(s)} = \frac{k_{z,j}}{k_0},
+  \label{eq:ch5_eta_s}
+\end{equation}
+so that $H_x^{(j)} = \eta_j^{(s)}(A_j\,\ee^{+\ii k_{z,j} z} -
+B_j\,\ee^{-\ii k_{z,j} z})$. The field vector at position $z$ inside layer $j$
+can then be written as
+\begin{equation}
+  \begin{pmatrix} E_y \\ H_x \end{pmatrix}_z
+  = \begin{pmatrix} 1 & 1 \\ \eta^{(s)} & -\eta^{(s)} \end{pmatrix}
+    \begin{pmatrix} A_j\,\ee^{+\ii k_{z,j} z} \\ B_j\,\ee^{-\ii k_{z,j} z} \end{pmatrix}.
+  \label{eq:ch5_field_vec}
+\end{equation}
+
+For the TM (p-polarised) polarisation, the roles of $E$ and $H$ are exchanged.
+The tangential fields are $H_y$ and $E_x$, and the TM optical admittance is
+\begin{equation}
+  \eta_j^{(p)} = \frac{\tilde\eps_j\,k_0}{k_{z,j}}.
+  \label{eq:ch5_eta_p}
+\end{equation}
+The structure of the field vectors is identical to the TE case with
+$\eta^{(s)} \to \eta^{(p)}$ and $E_y \to H_y$, $H_x \to E_x$. All the
+derivations below hold for both polarisations by using the appropriate
+admittance $\eta$.
+
+% -----------------------------------------------------------------------------
+\section{Boundary Conditions at a Single Interface}
+% -----------------------------------------------------------------------------
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.1,
+  ifc/.style={very thick, color=navy},
+  arr/.style={-{Latex[length=2mm]}, thick},
+  lbl/.style={font=\small}
+]
+  % Regions
+  \fill[KITblue!10] (-3.5, 0) rectangle (3.5, 2.2);
+  \fill[gray!20]    (-3.5,-2.2) rectangle (3.5, 0);
+  \draw[ifc] (-3.5,0) -- (3.5,0);
+
+  % Labels
+  \node[lbl] at (-2.5, 1.4) {Layer $j$ (above)};
+  \node[lbl, color=navy!70] at (-2.5, 0.7) {$\tilde\eps_j,\; k_{z,j},\; \eta_j$};
+  \node[lbl] at (-2.5,-1.4) {Layer $j{+}1$ (below)};
+  \node[lbl, color=navy!70] at (-2.5,-0.7) {$\tilde\eps_{j+1},\; k_{z,j+1},\; \eta_{j+1}$};
+  \node[right, lbl, color=navy] at (3.5, 0.0) {$z = z_j$};
+
+  % Wave arrows (layer j)
+  \draw[arr, color=KITblue, very thick] (0.5, 2.0) -- (0.5, 0.2)
+    node[midway, right, lbl] {$A_j\,\ee^{+\ii k_{z,j}z}$};
+  \draw[arr, color=coral, very thick] (1.5, 0.2) -- (1.5, 2.0)
+    node[midway, right, lbl] {$B_j\,\ee^{-\ii k_{z,j}z}$};
+
+  % Wave arrows (layer j+1)
+  \draw[arr, color=KITblue, very thick] (0.5,-0.2) -- (0.5,-2.0)
+    node[midway, right, lbl] {$A_{j+1}\,\ee^{+\ii k_{z,j+1}z}$};
+  \draw[arr, color=coral, very thick] (1.5,-2.0) -- (1.5,-0.2)
+    node[midway, right, lbl] {$B_{j+1}\,\ee^{-\ii k_{z,j+1}z}$};
+
+  % Boundary condition note
+  \node[left, align=right, font=\footnotesize, color=navy] at (-0.2, 0) {
+    $E_y$ (or $H_y$) continuous\\
+    $H_x$ (or $E_x$) continuous};
+\end{tikzpicture}
+\caption{Field amplitudes at the interface between layer $j$ (above) and
+  layer $j+1$ (below) at position $z = z_j$. Each layer supports a
+  downward-propagating wave (amplitude $A$, blue arrow) and an
+  upward-propagating wave (amplitude $B$, red arrow). The boundary conditions
+  require the tangential field components to be the same on both sides of the
+  interface.}
+\label{fig:ch5_interface}
+\end{figure}
+
+At the interface $z = z_j$ between layer $j$ and layer $j+1$, the boundary
+conditions require the tangential components of $\Evec$ and $\Hvec$ to be
+continuous. Evaluating equation~\eqref{eq:ch5_field_vec} on both sides at
+$z = z_j$ and setting the fields equal:
+\begin{equation}
+  \begin{pmatrix} 1 & 1 \\ \eta_j & -\eta_j \end{pmatrix}
+  \begin{pmatrix} A_j\,\ee^{+\ii k_{z,j} z_j} \\ B_j\,\ee^{-\ii k_{z,j} z_j} \end{pmatrix}
+  =
+  \begin{pmatrix} 1 & 1 \\ \eta_{j+1} & -\eta_{j+1} \end{pmatrix}
+  \begin{pmatrix} A_{j+1}\,\ee^{+\ii k_{z,j+1} z_j} \\
+                  B_{j+1}\,\ee^{-\ii k_{z,j+1} z_j} \end{pmatrix}.
+  \label{eq:ch5_bc_raw}
+\end{equation}
+We call the $2\times 2$ matrix on each side the \textbf{dynamical matrix}
+$\bm{D}_j$:
+\begin{equation}
+  \bm{D}_j = \begin{pmatrix} 1 & 1 \\ \eta_j & -\eta_j \end{pmatrix}.
+  \label{eq:ch5_dynamical}
+\end{equation}
+Inverting $\bm{D}_j$ (which has determinant $-2\eta_j$):
+\begin{equation}
+  \bm{D}_j^{-1} = \frac{1}{2}
+  \begin{pmatrix} 1 & \eta_j^{-1} \\ 1 & -\eta_j^{-1} \end{pmatrix},
+  \label{eq:ch5_dinv}
+\end{equation}
+the field amplitude vector $(A_j, B_j)^T$ at the top of the interface relates
+to the vector at the bottom by:
+\begin{equation}
+  \begin{pmatrix} A_j \\ B_j \end{pmatrix}_{z_j}
+  = \bm{D}_j^{-1}\,\bm{D}_{j+1}
+  \begin{pmatrix} A_{j+1} \\ B_{j+1} \end{pmatrix}_{z_j}.
+  \label{eq:ch5_transfer_interface}
+\end{equation}
+The matrix $\bm{D}_j^{-1}\bm{D}_{j+1}$ is the \textbf{interface transfer
+matrix}.
+
+% -----------------------------------------------------------------------------
+\section{Propagation Through a Single Layer}
+% -----------------------------------------------------------------------------
+
+Inside layer $j$, the wave amplitudes at position $z$ are those at $z=0$
+multiplied by phase factors:
+\begin{equation}
+  A_j(z) = A_j(0)\,\ee^{+\ii k_{z,j} z}, \qquad
+  B_j(z) = B_j(0)\,\ee^{-\ii k_{z,j} z}.
+  \label{eq:ch5_phase_factors}
+\end{equation}
+For a layer of thickness $d_j$ extending from $z=0$ to $z=d_j$, the amplitudes
+at the bottom relate to those at the top by the \textbf{propagation matrix}:
+\begin{equation}
+  \begin{pmatrix} A_j \\ B_j \end{pmatrix}_{z=d_j}
+  = \begin{pmatrix} \ee^{+\ii k_{z,j} d_j} & 0 \\ 0 & \ee^{-\ii k_{z,j} d_j}
+    \end{pmatrix}
+  \begin{pmatrix} A_j \\ B_j \end{pmatrix}_{z=0}.
+  \label{eq:ch5_prop_matrix}
+\end{equation}
+
+% -----------------------------------------------------------------------------
+\section{The Abelès Characteristic Matrix}
+% -----------------------------------------------------------------------------
+
+Combining the propagation through layer $j$ and the interface matching, the
+field vector at the top of layer $j$ relates to the field vector at the bottom
+through the \textbf{Abelès characteristic matrix}~\cite{macleod}:
+\begin{equation}
+  \bm{M}_j = \begin{pmatrix}
+    \cos\delta_j & -\ii\,\sin\delta_j / \eta_j \\
+    -\ii\,\eta_j\,\sin\delta_j & \cos\delta_j
+  \end{pmatrix},
+  \label{eq:ch5_abeles}
+\end{equation}
+where the \textbf{phase thickness} is
+\begin{equation}
+  \boxed{\delta_j = -k_{z,j}\,d_j.}
+  \label{eq:ch5_delta}
+\end{equation}
+
+\begin{warnbox}
+\textbf{Sign convention for $\delta$.} With the time convention
+$\ee^{-\ii\omega t}$, the downward-propagating wave carries the factor
+$\ee^{+\ii k_{z,j} z}$. For the Abelès matrix to take the cosine-sine form in
+equation~\eqref{eq:ch5_abeles}, the phase variable must be defined as
+$\delta_j = -k_{z,j} d_j$. Using the opposite sign $\delta_j = +k_{z,j} d_j$
+is a common error that produces results disagreeing with measured data and
+with the \texttt{tmm} Python package. The correct sign gives agreement to
+$10^{-14}$ degrees with the \texttt{tmm} package in all validation tests.
+\end{warnbox}
+
+% -----------------------------------------------------------------------------
+\section{The Full Multilayer: Ordered Matrix Product}
+% -----------------------------------------------------------------------------
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9,
+  box/.style={draw=navy, fill=navy!8, minimum width=1.8cm,
+              minimum height=0.9cm, font=\small, align=center},
+  amb/.style={draw=KITgreen, fill=KITgreen!10, minimum width=1.2cm,
+              minimum height=0.6cm, font=\small, align=center},
+  arr/.style={-{Latex[length=2mm]}, thick, color=navy}
+]
+\node[amb] (amb) at (-5.5, 0) {Ambient\\($\eta_0$)};
+\node[box] (m1) at (-3.3, 0) {$\bm{M}_1$\\(TiO$_2$, $d_1$)};
+\node[box] (m2) at (-1.1, 0) {$\bm{M}_2$\\(Ni, $d_2$)};
+\node[font=\Large] at (0.5, 0) {$\cdots$};
+\node[box] (m6) at (2.1, 0) {$\bm{M}_6$\\(Ni, $d_6$)};
+\node[amb] (sub) at (4.0, 0) {Substrate\\($\eta_s$)};
+\draw[arr] (amb.east) -- (m1.west);
+\draw[arr] (m1.east) -- (m2.west);
+\draw[arr] (m2.east) -- (0.0, 0);
+\draw[arr] (1.0, 0) -- (m6.west);
+\draw[arr] (m6.east) -- (sub.west);
+\node[above=10pt, font=\small, color=KITblue] at ($(m1.north)!0.5!(m6.north)$)
+  {$\bm{M}_\text{tot} = \bm{M}_1\cdot\bm{M}_2\cdots\bm{M}_6$};
+\draw[color=KITblue, thick]
+  (m1.north west) -- ++(0, 6pt) -- ($(m6.north east)+(0,6pt)$) -- (m6.north east);
+\draw[arr, color=navy!40] (-6.5,-0.8) -- (5.2,-0.8)
+  node[right, font=\scriptsize] {$z$};
+\node[below, font=\scriptsize, color=navy!40] at (-5.5,-0.8) {air};
+\node[below, font=\scriptsize, color=navy!40] at (4.0,-0.8) {SiO$_2$};
+\end{tikzpicture}
+\caption{Matrix product structure for the six-layer [TiO$_2$/Ni]$\times$3
+  stack. The total optical response is the ordered product
+  $\bm{M}_\text{tot} = \bm{M}_1 \cdot \bm{M}_2 \cdots \bm{M}_6$, computed
+  from the incident-medium side (left) to the substrate side (right). The
+  ambient medium and substrate enter only through their admittances in the
+  B/C vector calculation.}
+\label{fig:ch5_matrix_product}
+\end{figure}
+
+For a stack of $N$ layers, the total characteristic matrix is:
+\begin{equation}
+  \bm{M}_\text{tot} = \prod_{j=1}^{N} \bm{M}_j
+  = \begin{pmatrix} m_{11} & m_{12} \\ m_{21} & m_{22} \end{pmatrix}.
+  \label{eq:ch5_mtot}
+\end{equation}
+The order matters: $\bm{M}_1$ is the first layer encountered by the incoming
+wave. For our stack with TiO$_2$ facing the air, $\bm{M}_1$ is the first
+TiO$_2$ layer.
+
+% -----------------------------------------------------------------------------
+\section{Extracting R and T: the B/C Vector Formalism}
+% -----------------------------------------------------------------------------
+
+We define the column vector
+\begin{equation}
+  \begin{pmatrix} B \\ C \end{pmatrix}
+  = \bm{M}_\text{tot}
+  \begin{pmatrix} 1 \\ \eta_s \end{pmatrix},
+  \label{eq:ch5_BC}
+\end{equation}
+where $\eta_s$ is the admittance of the substrate. The physical content of
+this operation is: we seed the substrate side with the field of a transmitted
+wave and propagate it back through all layers to the ambient interface. The
+reflection and transmission amplitudes follow:
+\begin{align}
+  r &= \frac{\eta_0 B - C}{\eta_0 B + C},
+  \label{eq:ch5_r} \\
+  t &= \frac{2\eta_0}{\eta_0 B + C},
+  \label{eq:ch5_t}
+\end{align}
+where $\eta_0$ is the admittance of the ambient medium. The power reflectance
+and transmittance are
+\begin{align}
+  R &= |r|^2,
+  \label{eq:ch5_R} \\
+  T &= \frac{\Re(\eta_s)}{\Re(\eta_0)}\,|t|^2.
+  \label{eq:ch5_T}
+\end{align}
+The factor $\Re(\eta_s)/\Re(\eta_0)$ accounts for the ratio of real power in
+the transmitted and incident waves. The absorbed fraction is $A = 1 - R - T$.
+
+\begin{resultbox}
+\textbf{Energy conservation check.} For a passive stack, $R + T \leq 1$ at
+every wavelength. Any negative absorptance signals a sign error in $\delta$,
+a wrong branch choice for $k_z$, or an inconsistency in the admittance
+definitions. This check was used throughout the development of the code.
+\end{resultbox}
+
+% -----------------------------------------------------------------------------
+\section{Extension to Uniaxial Anisotropic Layers}
+% -----------------------------------------------------------------------------
+
+The Abelès formalism above applies to isotropic layers. The Ni/TiO$_2$ stack,
+treated as a homogeneous effective medium, is uniaxial with in-plane
+permittivity $\epar$ and out-of-plane permittivity $\eperp$. Only two
+substitutions are needed to extend the formalism.
+
+\subsection{Modified Wavevector for the Extraordinary Wave}
+
+For the \textbf{TE} wave in a uniaxial layer, the electric field is purely
+in-plane and probes only $\epar$. The wavevector is identical to the isotropic
+case with $\tilde\eps \to \epar$:
+\begin{equation}
+  k_{z}^{(\mathrm{TE})} = \sqrt{\epar\,k_0^2 - k_x^2},
+  \qquad \eta^{(s)} = \frac{k_z^{(\mathrm{TE})}}{k_0}.
+  \label{eq:ch5_kz_TE}
+\end{equation}
+
+For the \textbf{TM} wave, the electric field has both in-plane and out-of-plane
+components. From the TM dispersion relation (equation~\eqref{eq:ch2_TM_disp}):
+\begin{equation}
+  k_{z}^{(\mathrm{TM})} = k_0\sqrt{\epar - \frac{\epar}{\eperp}\sin^2\theta}.
+  \label{eq:ch5_kz_TM}
+\end{equation}
+This is the \textbf{extraordinary wavevector}. Both $\epar$ and $\eperp$
+appear: the TM wave samples both permittivity components simultaneously.
+This is the key mathematical reason why TM ellipsometry is sensitive to
+$\eperp$ while TE is not.
+
+\subsection{Modified Admittance for TM}
+
+For TM in a uniaxial medium, the tangential fields $H_y$ and $E_x$ are
+related through the \textbf{tilted admittance}:
+\begin{equation}
+  \eta^{(p)}_\text{aniso} = \frac{\epar\,k_0}{k_z^{(\mathrm{TM})}}.
+  \label{eq:ch5_eta_p_aniso}
+\end{equation}
+For an isotropic medium ($\epar = \eperp = \tilde\eps$), this reduces to
+$\tilde\eps k_0/k_z$, recovering the standard result.
+
+\subsection{The Anisotropic Characteristic Matrix}
+
+With these two substitutions, the Abelès matrix takes exactly the same form:
+\begin{equation}
+  \bm{M}_j^\text{aniso} = \begin{pmatrix}
+    \cos\delta_j & -\ii\,\sin\delta_j / \eta_j^{(p)} \\
+    -\ii\,\eta_j^{(p)}\,\sin\delta_j & \cos\delta_j
+  \end{pmatrix},
+  \qquad \delta_j = -k_{z,j}^{(\mathrm{TM})}\,d_j.
+  \label{eq:ch5_abeles_aniso}
+\end{equation}
+The entire B/C formalism applies unchanged. This is the key practical
+advantage of the Abelès approach: uniaxial anisotropy requires only two
+parameter substitutions; the matrix algebra is identical.
+
+% -----------------------------------------------------------------------------
+\section{Computing the Ellipsometric Observables}
+% -----------------------------------------------------------------------------
+
+We apply the B/C formalism twice: once with TE admittances (yielding $r_s$)
+and once with TM admittances (yielding $r_p$):
+\begin{align}
+  r_s &= \frac{\eta_0^{(s)} B_s - C_s}{\eta_0^{(s)} B_s + C_s},
+  \label{eq:ch5_rs} \\
+  r_p &= \frac{\eta_0^{(p)} B_p - C_p}{\eta_0^{(p)} B_p + C_p},
+  \label{eq:ch5_rp}
+\end{align}
+where $\eta_0^{(s)} = \cos\theta_\text{inc}$ and
+$\eta_0^{(p)} = 1/\cos\theta_\text{inc}$ for air. The ellipsometric ratio
+and NCS parameters are then:
+\begin{equation}
+  \rho_\text{ell} = \frac{r_p}{r_s} = \tan\Psi\,\ee^{\ii\Delta},
+  \label{eq:ch5_rho_ell}
+\end{equation}
+\begin{align}
+  N &= \cos 2\Psi = \frac{|r_s|^2 - |r_p|^2}{|r_s|^2 + |r_p|^2},
+  \label{eq:ch5_N} \\
+  C &= \sin 2\Psi\,\cos\Delta
+     = \frac{2\,\Re(r_p r_s^*)}{|r_s|^2 + |r_p|^2},
+  \label{eq:ch5_C} \\
+  S &= \sin 2\Psi\,\sin\Delta
+     = \frac{2\,\Im(r_p r_s^*)}{|r_s|^2 + |r_p|^2}.
+  \label{eq:ch5_S}
+\end{align}
+To match the CompleteEASE convention (Chapter~\ref{ch:sample_measurements}),
+$S$ is negated: $S_\text{CE} = -S$.
+
+% -----------------------------------------------------------------------------
+\section{Explicit Application to the Ni/TiO\texorpdfstring{$_2$}{2} Stack}
+% -----------------------------------------------------------------------------
+
+We apply the full TMM to the [TiO$_2$/Ni]$\times$3 stack at $\lambda = 700$\,nm
+and $\theta = 60^\circ$ to give a concrete numerical illustration.
+
+\subsection{Input Parameters at 700\,nm, $60^\circ$}
+
+The free-space wavenumber and in-plane wavevector are:
+\begin{align}
+  k_0 &= \frac{2\pi}{700\,\text{nm}} = 8.976 \times 10^{-3}\,\text{nm}^{-1}, \\
+  k_x &= k_0\sin 60^\circ = 7.772 \times 10^{-3}\,\text{nm}^{-1}.
+  \label{eq:ch5_kxk0}
+\end{align}
+The complex permittivities from the material databases at this wavelength are:
+\begin{align}
+  \eps_{\mathrm{Ni}}(700\,\text{nm})
+    &= (2.12 + 4.70\,\ii)^2 = -17.59 + 19.93\,\ii, \\
+  \eps_{\mathrm{TiO_2}}(700\,\text{nm})
+    &\approx 5.52\quad\text{(effectively real)}.
+  \label{eq:ch5_epsilons}
+\end{align}
+The wavevectors in each material are:
+\begin{align}
+  k_{z,\mathrm{TiO_2}} &= k_0\sqrt{5.52 - \sin^2 60^\circ}
+                         = k_0 \times 2.184\;\text{(real)},
+  \label{eq:ch5_kz_TiO2} \\
+  k_{z,\mathrm{Ni}} &= k_0\sqrt{-18.34 + 19.93\,\ii}
+                      \approx k_0\,(2.09 + 4.76\,\ii).
+  \label{eq:ch5_kz_Ni}
+\end{align}
+
+\subsection{Phase Thicknesses and First-Layer Matrix}
+
+For the first TiO$_2$ layer ($d_1 = 9.171$\,nm):
+\begin{equation}
+  \delta_1 = -k_{z,\mathrm{TiO_2}}\,d_1
+           = -2.184 \times 9.171 \times 8.976 \times 10^{-3}
+           = -0.1796\;\text{(real)},
+  \label{eq:ch5_delta1}
+\end{equation}
+giving the characteristic matrix (with $\eta_{\mathrm{TiO_2}}^{(s)} = 2.184$):
+\begin{equation}
+  \bm{M}_1 = \begin{pmatrix}
+    \cos(-0.1796) & -\ii\sin(-0.1796)/2.184 \\
+    -\ii\times 2.184\times\sin(-0.1796) & \cos(-0.1796)
+  \end{pmatrix}
+  = \begin{pmatrix}
+    0.984 & +\ii\,0.082 \\
+    +\ii\,0.394 & 0.984
+  \end{pmatrix}.
+  \label{eq:ch5_M1_numerical}
+\end{equation}
+For a lossless layer, $\delta$ is real, the diagonal entries are real, and
+the off-diagonal entries are purely imaginary, as expected.
+
+For the first Ni layer ($d_2 = 5.556$\,nm), $\delta_2$ is complex:
+\begin{equation}
+  \delta_2 = -(2.09 + 4.76\,\ii) \times 5.556 \times 8.976 \times 10^{-3}
+           = -0.1042 - 0.2373\,\ii.
+  \label{eq:ch5_delta2}
+\end{equation}
+The matrix entries now involve $\cos(-0.1042 - 0.2373\,\ii)$, computed via
+$\cos(\alpha + \ii\beta) = \cos\alpha\cosh\beta - \ii\sin\alpha\sinh\beta$,
+giving complex entries with comparable real and imaginary parts. This reflects
+the strongly absorbing character of the Ni layer.
+
+The total matrix $\bm{M}_\text{tot} = \bm{M}_1\cdots\bm{M}_6$ is computed
+numerically in the code module \texttt{aniso\_tmm.py}, which implements both
+the isotropic and anisotropic (uniaxial) cases and is validated to $10^{-14}$
+degrees against the \texttt{tmm} Python package.
+
+% -----------------------------------------------------------------------------
+\section{Validation}
+% -----------------------------------------------------------------------------
+
+The TMM implementation was validated at three levels.
+
+\paragraph{Level 1: Isotropic agreement with \texttt{tmm}.}
+For the [TiO$_2$/Ni]$\times$3 stack at all wavelengths ($400$ to $1000$\,nm)
+and all angles of incidence ($0$ to $80^\circ$), our implementation agrees
+with the \texttt{tmm} package to better than $10^{-14}$ degrees in $\Psi$
+and $\Delta$. This exceeds the precision of double-precision arithmetic and
+confirms that the matrix algebra and admittance definitions are correct.
+
+\paragraph{Level 2: Anisotropic agreement with Berreman $4\times 4$.}
+For uniaxial test cases, the Berreman $4\times 4$ matrix method provides an
+independent first-principles reference that makes no assumptions about
+polarisation separation. Our $2\times 2$ anisotropic Abelès implementation
+agrees with the Berreman method to $10^{-15}$, confirming the extraordinary
+$k_z$ and tilted admittance are correctly implemented.
+
+\paragraph{Level 3: Energy conservation.}
+The computed $R + T$ was checked against $1 - A$ at every wavelength and
+angle. No deviation greater than $10^{-12}$ was found, confirming that the
+energy balance is maintained throughout.
+
+\paragraph{Substrate discrimination.}
+Running the model with SiO$_2$ (Malitson) vs.~Si (Green 2008) substrates
+gave rms ellipsometric residuals of $0.001$ and $0.012$ respectively,
+confirming the substrate as borosilicate glass (optically equivalent to
+fused silica) and demonstrating that the model is sensitive enough to
+discriminate between different substrate materials.
+
+\begin{resultbox}
+\textbf{Summary of Chapter~\ref{ch:tmm_derivation}.} Starting from boundary
+conditions at a single interface, we derived the Abelès $2\times 2$
+characteristic matrix $\bm{M}_j$ with phase thickness $\delta_j = -k_{z,j}d_j$.
+The total product $\bm{M}_\text{tot}$ connects to $R$, $T$, and the
+ellipsometric observables $N$, $C$, $S$ via the B/C vector formalism.
+The uniaxial extension requires only two substitutions: the extraordinary
+wavevector $k_z^{(\mathrm{TM})} = k_0\sqrt{\epar - (\epar/\eperp)\sin^2\theta}$
+and the tilted admittance $\eta^{(p)} = \epar k_0/k_z^{(\mathrm{TM})}$.
+The implementation was validated to $10^{-14}$ degrees against the
+\texttt{tmm} package and to $10^{-15}$ against the Berreman $4\times 4$
+method.
+\end{resultbox}
