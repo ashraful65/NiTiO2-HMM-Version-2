@@ -130,15 +130,17 @@ nanoscale heat transfer between objects.
     {(a) Elliptic / dielectric};
 \end{scope}
 
-%% ---- Panel B: Type-I Hyperbolic (arms along k_parallel) ----
-%% domain starts at 0.44 so that 0.44^2 = 0.1936 > 0.18 (avoids sqrt of negative)
+%% ---- Panel B: Type-I Hyperbolic ----
+%% eps_par>0, eps_perp<0 => kz^2/(eps_par*k0^2) - k_par^2/(|eps_perp|*k0^2) = 1
+%% => opens along kz (VERTICAL). Domain variable = kz; k_par derived.
+%% k_par = 0.62*sqrt(kz^2 - 0.14): need kz >= sqrt(0.14)~0.374, domain from 0.38
 \begin{scope}[shift={(0.8, 2.3)}]
   \draw[axis] (-1.4,0) -- (1.5,0) node[right, lbl] {$k_\parallel/k_0$};
   \draw[axis] (0,-1.4) -- (0,1.5) node[above, lbl] {$k_z/k_0$};
   \foreach \sgny in {1,-1} {
     \foreach \sgnx in {1,-1} {
-      \draw[hypcurve, domain=0.44:1.35, samples=60]
-        plot ({\sgnx*\x}, {\sgny*0.58*sqrt(\x*\x - 0.18)});
+      \draw[hypcurve, domain=0.38:1.35, samples=60]
+        plot ({\sgnx*0.62*sqrt(\x*\x - 0.14)}, {\sgny*\x});
     }
   }
   \node[sublbl] at (0, 0.38) {$\Re\epar>0$};
@@ -147,15 +149,17 @@ nanoscale heat transfer between objects.
     {(b) Type-I Hyperbolic};
 \end{scope}
 
-%% ---- Panel C: Type-II Hyperbolic (arms along k_z) ----
-%% domain starts at 0.38 so that 0.38^2 = 0.1444 > 0.14 (safe)
+%% ---- Panel C: Type-II Hyperbolic ----
+%% eps_par<0, eps_perp>0 => k_par^2/(eps_perp*k0^2) - kz^2/(|eps_par|*k0^2) = 1
+%% => opens along k_par (HORIZONTAL). Domain variable = k_par; kz derived.
+%% kz = 0.58*sqrt(k_par^2 - 0.18): need k_par >= sqrt(0.18)~0.424, domain from 0.44
 \begin{scope}[shift={(-4.8, -1.9)}]
   \draw[axis] (-1.4,0) -- (1.5,0) node[right, lbl] {$k_\parallel/k_0$};
   \draw[axis] (0,-1.4) -- (0,1.5) node[above, lbl] {$k_z/k_0$};
   \foreach \sgny in {1,-1} {
     \foreach \sgnx in {1,-1} {
-      \draw[hypcurve, domain=0.38:1.35, samples=60]
-        plot ({\sgnx*0.62*sqrt(\x*\x - 0.14)}, {\sgny*\x});
+      \draw[hypcurve, domain=0.44:1.35, samples=60]
+        plot ({\sgnx*\x}, {\sgny*0.58*sqrt(\x*\x - 0.18)});
     }
   }
   \node[sublbl] at (0, 0.38) {$\Re\epar<0$};
@@ -183,9 +187,9 @@ nanoscale heat transfer between objects.
   \textbf{(a)} Both permittivities are positive: the IFC is a closed ellipse,
   as in an ordinary dielectric crystal.
   \textbf{(b)} $\Re\epar > 0$ and $\Re\eperp < 0$: the IFC is a Type-I open
-  hyperbola whose arms extend along the $k_\parallel$ axis.
-  \textbf{(c)} $\Re\epar < 0$ and $\Re\eperp > 0$: the IFC is a Type-II open
   hyperbola whose arms extend along the $k_z$ axis.
+  \textbf{(c)} $\Re\epar < 0$ and $\Re\eperp > 0$: the IFC is a Type-II open
+  hyperbola whose arms extend along the $k_\parallel$ axis.
   \textbf{(d)} Both permittivities are negative: no propagating TM modes exist.
   The Ni/TiO$_2$ multilayer studied in this report sits nominally in the
   Type-II regime but, as we show in Chapters~\ref{ch:em_theory}
